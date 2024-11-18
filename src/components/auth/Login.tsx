@@ -18,7 +18,7 @@ import {AxiosError} from "axios";
 import useAuth from "../../contexts/auth/useAuth";
 import {jwtDecode, JwtPayload} from "jwt-decode";
 
-const successNotify = () => toast.success("Login successful");
+// const successNotify = () => toast.success("Login successful");
 const errorNotify = (errorMessage: any) => toast.error(errorMessage);
 
 /**
@@ -106,8 +106,8 @@ function Login() {
     });
 
     // Destructuring some functions from object of userForm hooks
-    const {register, control, handleSubmit, formState, reset} = form;
-    const {errors, isDirty, isValid, isSubmitting} = formState;
+    const {register, handleSubmit, formState} = form;
+    const {errors} = formState;
 
 
     const onSubmit = (data: FormValues) => {

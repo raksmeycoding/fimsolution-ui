@@ -43,7 +43,6 @@ const formSchema: ZodSchema<LoanReqDto> = z.object({
 
 const CreateLoan = () => {
     const [isEditingUser, setIsEditingUser] = React.useState(false);
-    const [isPopUpCreateUserForm, setIsPopUpCreateUserForm] = React.useState(false);
 
 
     const handleCreatUser = (formData: LoanReqDto) => {
@@ -78,7 +77,7 @@ const CreateLoan = () => {
 
     };
 
-    const disabledKey: (keyof LoanReqDto)[] = ["id"];
+    // const disabledKey: (keyof LoanReqDto)[] = ["id"];
 
     const form = useForm<LoanReqDto>({
         defaultValues: dataTemplate,
@@ -88,13 +87,13 @@ const CreateLoan = () => {
 
     const {register, handleSubmit, formState: {errors}} = form;
 
-    const disableByKey = (key: keyof LoanReqDto) => disabledKey.includes(key);
+    // const disableByKey = (key: keyof LoanReqDto) => disabledKey.includes(key);
 
     // Using the custom hook to create a loan
-    const {mutate: createLoan, isPending: isPendingCreatLoan} = useCreateLoan();
+    const {mutate: createLoan} = useCreateLoan();
 
     // Using the custom hook to fetch all loans
-    const {data: loansData, isLoading, error} = useAllLoans();
+    const {data: loansData} = useAllLoans();
 
 
     const cancelAddUserHandler = () => {

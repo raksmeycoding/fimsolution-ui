@@ -1,4 +1,4 @@
-import React, {createContext} from 'react';
+import React from 'react';
 import {useForm} from 'react-hook-form';
 import {z, ZodSchema} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -30,7 +30,7 @@ const formSchema: ZodSchema<User> = z.object({
 function AdminCreateUser() {
 
     const [isEditingUser, setIsEditingUser] = React.useState(false);
-    const [isPopUpCreateUserForm, setIsPopUpCreateUserForm] = React.useState(false);
+
 
     const {mutate} = useCreateUser();
 
@@ -159,102 +159,6 @@ function AdminCreateUser() {
 }
 
 export default AdminCreateUser;
-
-interface CreateUserContextTypes {
-    data: User []
-    handleShowInputAddUser: () => void
-}
-
-const CreateUserContext = createContext<CreateUserContextTypes | null>(null);
-
-// interface CreateUserContextProviderProp {
-//     children: React.ReactNode;
-// }
-
-// const CreateUserContextProvider: React.FC<CreateUserContextProviderProp> = ({children}) => {
-//
-//     return <CreateUserContext.Provider value={}>{children}</CreateUserContext.Provider>;
-// }
-
-
-//
-// interface DynamicProp<T extends A> {
-//     template: T;
-//     indexDisable?: number;
-//     disabledKey?: (keyof T)[];
-// }
-
-
-const DynamicTableInputFrom =
-    ({template, indexDisable = 0, disabledKey}:
-         {
-             template: User,
-             indexDisable?: number,
-             disabledKey?: (keyof User)[];
-         }) => {
-
-
-        const form = useForm<User>({
-            defaultValues: template,
-            resolver: zodResolver(formSchema),
-            mode: "all"
-        })
-
-        const {register, handleSubmit, formState: {errors}} = form;
-
-        const disableIndex: string = Object.keys(template)[indexDisable];
-        const disableByKey = (key: keyof User) => disabledKey?.includes(key) ?? false;
-
-        return (
-            <>
-                <tr className="border-t">
-
-                    {
-
-                        (Object.keys(template) as (keyof User & { actions: string })[]).map((key) => {
-                            return (
-                                <>
-                                    <td key={key} className="px-4 py-2">
-                                        <input
-                                            disabled={disabledKey ? disableByKey(key) : key === disableIndex}
-                                            {...register(key)}
-                                            className="px-2 py-1 border"
-                                        />
-
-                                    </td>
-
-                                </>
-
-                            );
-                        })
-
-                    }
-
-                    {/* Add an additional column for actions */}
-                    <td className="px-4 py-2">
-                        <button className="bg-blue-500 text-white px-2 py-1 rounded">Update</button>
-                        <button className="bg-red-500 text-white px-2 py-1 rounded ml-2">Delete</button>
-                    </td>
-
-
-                </tr>
-            </>
-        )
-    }
-
-
-const FormCreateUser = () => {
-    return (
-
-        <>
-            <div>Let create user</div>
-        </>
-    );
-}
-
-// dummyData.js
-
-
 
 
 

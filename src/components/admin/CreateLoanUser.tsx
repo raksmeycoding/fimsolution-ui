@@ -35,11 +35,11 @@ export const loanUserReqDtoSchema = z.object({
     email: z.string().email("Invalid email address").min(1, "Email is required"), // Email is required and must be valid
 });
 
-const errorToast = (error: any) => toast.error(error.message);
+// const errorToast = (error: any) => toast.error(error.message);
 
 const CreateLoanUser = () => {
     const [isEditingUser, setIsEditingUser] = React.useState(false);
-    const {mutate, isPending} = useMutation({
+    const {mutate} = useMutation({
         onMutate: () => {
             toast.loading("Loan user is creating...", {id: "create-loan-user-id"})
         },

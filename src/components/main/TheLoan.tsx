@@ -33,15 +33,15 @@ const TheLoan = () => {
 
     const {
         data: amountDueData,
-        isLoading: isAmoutDueLoanding,
-        isError: isAmoutError,
+        // isLoading: isAmoutDueLoanding,
+        // isError: isAmoutError,
         error: amoutDueError
     } = useAmountDue();
 
     const {
         data: passDueData,
-        isLoading: isPassDueLoanding,
-        isError: isPassError,
+        // isLoading: isPassDueLoanding,
+        // isError: isPassError,
         error: passDueError
     } = usePastDue();
 
@@ -72,8 +72,8 @@ const TheLoan = () => {
 
     const {
         data: defaultLoanUserData,
-        isLoading: isDefaultLoanUserLoading,
-        isError: isDefaultLoanUserError,
+        // isLoading: isDefaultLoanUserLoading,
+        // isError: isDefaultLoanUserError,
         error: defaultLoanUserError
     } = useDefaulLoanUser();
 

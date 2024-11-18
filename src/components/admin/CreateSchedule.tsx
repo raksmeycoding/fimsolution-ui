@@ -51,7 +51,6 @@ const formSchema: ZodSchema<ScheduleReqDto> = z.object({
 
 const CreateSchedule = () => {
     const [isEditingSchedule, setIsEditingSchedule] = React.useState(false);
-    const [isPopUpCreateScheduleForm, setIsPopUpCreateScheduleForm] = React.useState(false);
 
     const {register, handleSubmit, formState: {errors}} = useForm<ScheduleReqDto>({
         defaultValues: {
@@ -75,8 +74,14 @@ const CreateSchedule = () => {
         mode: 'all',
     });
 
-    const {mutate: createSchedule, isPending: isPendingCreateSchedule} = useCreateSchedule();
-    const {data: schedulesData, isLoading, error} = useAllSchedules();
+    const {
+        mutate: createSchedule,
+        // isPending: isPendingCreateSchedule
+    } = useCreateSchedule();
+    const {
+        data: schedulesData,
+        error
+    } = useAllSchedules();
     const {data: loanData} = useAllLoans();
 
     useEffect(() => {

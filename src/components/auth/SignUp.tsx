@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
-import toast, {Toaster} from "react-hot-toast";
+import {Toaster} from "react-hot-toast";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import {Controller, useForm} from "react-hook-form";
@@ -73,13 +73,11 @@ const formSchema = z
     );
 
 
-
-const errorNotify = (errorMessage: any) => toast.error(errorMessage);
+// const errorNotify = (errorMessage: any) => toast.error(errorMessage);
 
 function SignUP() {
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [showConfirmPass, setShowConfirmPass] = useState<boolean>(false);
-    const [phone, setPhone] = useState("");
     const navigate = useNavigate();
 
     // Define default value of Login from using react-hook-form
@@ -100,7 +98,6 @@ function SignUP() {
         control,
         handleSubmit,
         formState,
-        reset,
     } = form;
     const {errors, isDirty, isValid, isSubmitting} = formState;
 
@@ -382,7 +379,6 @@ function SignUP() {
                                         value={field.value}
                                         onChange={(phone) => {
                                             field.onChange(phone); // Update react-hook-form's value
-                                            setPhone(phone); // Update local state if needed
                                         }}
                                         containerStyle={{
                                             marginTop: "16px",

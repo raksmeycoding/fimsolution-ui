@@ -48,19 +48,15 @@ const paymentFormSchema: z.ZodSchema<PaymentReqDto> = z.object({
 
 const CreatePayment = () => {
     const [isProcessing, setIsProcessing] = useState(false);
-    const {data: schedulesData, isLoading: isLoadingSchedules} = useAllSchedules();
-    const {mutate: createPayment, isPending, isSuccess} = useCreatePayment();
+    const {data: schedulesData} = useAllSchedules();
+    const {mutate: createPayment, isSuccess} = useCreatePayment();
     const {
         data: allPaymentsData,
         error: allPaymentsError,
-        isSuccess: isSuccessAllPayment,
-        isLoading: isLoadingAllPayments,
-        isPending: isPendingAllPayments,
-        isError: isAllPayemtError
     } = useAllPayments();
 
     // React Hook Form setup
-    const {register, handleSubmit, watch, control, formState: {errors}} = useForm<PaymentReqDto>({
+    const {register, handleSubmit, watch,  formState: {errors}} = useForm<PaymentReqDto>({
         resolver: zodResolver(paymentFormSchema),
         mode: "all"
     });
@@ -85,7 +81,7 @@ const CreatePayment = () => {
         createPayment(data)
     };
 
-    const {data: allLoans, isLoading: isAllLoanLoading} = useAllLoans();
+    const {data: allLoans} = useAllLoans();
 
     return (
 

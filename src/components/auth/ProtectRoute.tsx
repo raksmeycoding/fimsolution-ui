@@ -23,7 +23,7 @@ const ProtectRoute: React.FC<ProtectedRouteProps> = ({children, allowedRoles}) =
         staleTime: Infinity,
         enabled: false, // Disable automatic fetching
     });
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const {mutate, isPending: isRefreshing} = useMutation({
         mutationFn: async () => {
