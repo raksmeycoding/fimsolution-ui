@@ -21,14 +21,15 @@ axiosInstance.interceptors.request.use((config) => {
     return config;
 });
 
-
+let isRefreshingToken = false;
 // Response interceptor to handle token refresh
 axiosInstance.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
-        if (error.response && error.response.status === 401 && !originalRequest._retry) {
+        if (error.response && error.response.status === 401 && !originalRequest._retry && !isRefreshingToken) {
             originalRequest._retry = true;
+            isRefreshingToken = true;
             try {
                 const resWithNewToken = await axiosInstance.post<RespondDto<ResponseUserInfo>>(d.auth.API_AUTH_REFRESH_URL);
 
@@ -43,6 +44,7 @@ axiosInstance.interceptors.response.use(
                 }
 
             } catch (refreshError) {
+                console.error("refreshError", error);
                 return Promise.reject(refreshError);
             }
         }

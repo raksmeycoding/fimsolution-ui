@@ -26,13 +26,16 @@
     "react-scripts": "5.0.1",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4",
+    "wrangler": "^3.87.0",
     "zod": "^3.23.8"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "preview:worker": "npm run build && wrangler dedv",
+    "deploy:worker": "npm run build && wrangler deploy"
   },
   "eslintConfig": {
     "extends": [

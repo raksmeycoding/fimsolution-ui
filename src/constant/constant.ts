@@ -13,6 +13,9 @@ const app = {
         },
         schedule: {
             ALL_SCHEDULES_KEY: "ALL_SCHEDULES_KEY",
+            GET_AMOUNT_DUE_FROM_DEFAULT_LOAN_URL: "GET_AMOUNT_DUE_FROM_DEFAULT_LOAN_URL",
+            GET_BORROWER_YOU_ARE_SCHEDULE_BOTH_BORROWER_AND_LENDER: 'GET_BORROWER_YOU_ARE_SCHEDULE_BOTH_BORROWER_AND_LENDER',
+            GET_PAST_DUE: 'GET_PAST_DUE'
         },
         payment: {
             ALL_PAYMENTS_KEY: "ALL_PAYMENTS_KEY",
@@ -29,6 +32,7 @@ const app = {
         schedule: {
             POST_A_SINGLE_SCHEDULE: "/f2f/schedule",
             GET_ALL_SCHEDULES: "/f2f/schedule/all",
+            GET_PAST_DUE: "/f2f/schedule/past-due",
         },
         payment: {
             POST_A_SINGLE_PAYMENT: "/f2f/payment",
@@ -40,7 +44,8 @@ const app = {
         API_AUTH_LOGIN_URL: "/auth/login",
         API_AUTH_REGISTER_URL: "/auth/register",
         API_AUTH_REFRESH_URL: "/auth/refreshToken",
-        API_AUTH_VERIFY_ROLE: "/auth/verify-authority"
+        API_AUTH_VERIFY_ROLE: "/auth/verify-authority",
+        API_VERIFY_SESSION: "/verify/session"
     },
 
     f2f: {
@@ -55,6 +60,10 @@ const app = {
         user: {
             CREATE_LOAN_CURRENT_USER_URL: "/f2f/user",
             GET_ALL_USER_URL: "/f2f/users/all",
+        },
+        schedule: {
+            GET_AMOUNT_DUE_FROM_DEFAULT_LOAN_URL: "/f2f/schedule/amount-due",
+            GET_BORROWER_YOU_ARE_SCHEDULE_BOTH_BORROWER_AND_LENDER: "/f2f/schedule/schedule-to-receive",
         }
     },
 

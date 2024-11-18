@@ -1,6 +1,6 @@
 import React from 'react';
 import {z, ZodSchema} from "zod";
-import {LoanResDto, RequestDto, RespondDto} from "../../types";
+import {LoanReqDto, RequestDto, RespondDto} from "../../types";
 import {useMutation, useQuery} from "@tanstack/react-query";
 import axiosInstance from "../../api/axiosInstance";
 import d from "../../constant/constant";
@@ -25,7 +25,7 @@ import useCreateLoan from "../../hooks/useCreateLoan";
 
 const loanTypeEnum = ["REVOLVING", "COLLATERAL", "FIXED"] as const;
 
-const formSchema: ZodSchema<LoanResDto> = z.object({
+const formSchema: ZodSchema<LoanReqDto> = z.object({
     id: z.string(),
     nickName: z.string(),
     interest: z.string().regex(/^[-+]?\d+(\.\d+)?$/, {
@@ -50,8 +50,8 @@ const CreateLoan = () => {
     const [isPopUpCreateUserForm, setIsPopUpCreateUserForm] = React.useState(false);
 
 
-    const handleCreatUser = (formData: LoanResDto) => {
-        const requestBody: RequestDto<LoanResDto> = {
+    const handleCreatUser = (formData: LoanReqDto) => {
+        const requestBody: RequestDto<LoanReqDto> = {
             request: {
                 ...formData
             }
@@ -68,7 +68,7 @@ const CreateLoan = () => {
         setIsEditingUser((pre) => !pre);
     };
 
-    const dataTemplate: LoanResDto = {
+    const dataTemplate: LoanReqDto = {
         id: "",
         nickName: "",
         interest: "0",
@@ -79,11 +79,12 @@ const CreateLoan = () => {
         createdDate: "",
         endDate: "",
         isLinkToLoanUser: "",
+
     };
 
-    const disabledKey: (keyof LoanResDto)[] = ["id"];
+    const disabledKey: (keyof LoanReqDto)[] = ["id"];
 
-    const form = useForm<LoanResDto>({
+    const form = useForm<LoanReqDto>({
         defaultValues: dataTemplate,
         resolver: zodResolver(formSchema),
         mode: "all"
@@ -91,7 +92,7 @@ const CreateLoan = () => {
 
     const {register, handleSubmit, formState: {errors}} = form;
 
-    const disableByKey = (key: keyof LoanResDto) => disabledKey.includes(key);
+    const disableByKey = (key: keyof LoanReqDto) => disabledKey.includes(key);
 
     // Using the custom hook to create a loan
     const {mutate: createLoan, isPending: isPendingCreatLoan} = useCreateLoan();
@@ -126,7 +127,7 @@ const CreateLoan = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {loansData?.data?.map((loan: LoanResDto) => (
+                        {loansData?.data?.map((loan: LoanReqDto) => (
                             <tr key={loan.id || loan.nickName} className="border-t">
                                 <td className="px-4 py-2">{loan?.id?.slice(0, 8) + "..."}</td>
                                 <td className="px-4 py-2">{loan.nickName}</td>

@@ -1,6 +1,6 @@
 // hooks/useAllLoans.ts
 import {useQuery} from "@tanstack/react-query";
-import {LoanResDto, RespondDto} from "../types";
+import {LoanReqDto, LoanResDto, RespondDto} from "../types";
 import axiosInstance from "../api/axiosInstance";
 import d from "../constant/constant";
 

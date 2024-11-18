@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, Navigate} from 'react-router-dom';
+import {Link, Navigate, useNavigate} from 'react-router-dom';
 import {jwtDecode, JwtPayload} from 'jwt-decode';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import axiosInstance from '../../api/axiosInstance';
@@ -8,6 +8,8 @@ import {ResponseUserInfo} from '../../types/auth';
 import {setAccessToken} from '../../utils/tokenSerivce';
 import d from '../../constant/constant';
 import queryClient from '../../utils/clients/queryClient';
+import toast from "react-hot-toast";
+
 
 interface ProtectedRouteProps {
     children: React.ReactNode;
@@ -16,24 +18,29 @@ interface ProtectedRouteProps {
 
 const ProtectRoute: React.FC<ProtectedRouteProps> = ({children, allowedRoles}) => {
     const [hasPermission, setHasPermission] = useState<boolean>(false);
+    // const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
     const {data: accessToken} = useQuery<string>({
         queryKey: [d.key.ACCESS_TOKEN_KEY],
         staleTime: Infinity,
         enabled: false, // Disable automatic fetching
     });
+    const navigate = useNavigate();
 
     const {mutate, isPending: isRefreshing} = useMutation({
         mutationFn: async () => {
-            const response = await axiosInstance.post<RespondDto<ResponseUserInfo>>(d.auth.API_AUTH_REFRESH_URL);
+            const response = await axiosInstance.post<RespondDto<ResponseUserInfo>>(d.auth.API_VERIFY_SESSION);
             return response.data;
         },
         onSuccess: (data) => {
             setAccessToken(data.data.token as string);
             queryClient.setQueryData([d.key.ACCESS_TOKEN_KEY], data.data.token); // Update token in cache
         },
-        onError: () => {
-            // Handle token refresh errors, for example redirecting to login
-        },
+        // onError: () => {
+        //     // Handle token refresh errors, for example redirecting to login
+        //     toast.error("Error while trying to authenticate, please retry and login again");
+        //     navigate("/login")
+        // },
+
     });
 
     useEffect(() => {

@@ -38,7 +38,7 @@ const App: React.FC = () => (
                     <Route path="/dash" element={
                         <ProtectRoute allowedRoles={["ROLE_ADMIN"]}>
                             <AdminDashboard/>
-                        </ProtectRoute>
+                            </ProtectRoute>
                     }>
                         <Route index path="create-user" element={<AdminCreateUser/>}/>
                         <Route path="create-loan-user" element={<CreateLoanUser/>}/>

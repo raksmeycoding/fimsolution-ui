@@ -8,7 +8,7 @@ import d from "../../constant/constant";
 import queryClient from "../../utils/clients/queryClient";
 import {FaEdit, FaRegSave} from "react-icons/fa";
 import {MdDeleteOutline} from "react-icons/md";
-import {LoanResDto, RequestDto, RespondDto} from "../../types";
+import {LoanReqDto, RequestDto, RespondDto} from "../../types";
 import {LoanUserReqDto, LoanUserResDto} from "../../types/loan/loan";
 import useUsers from "../../hooks/useUsers";
 import useAllLoans from "../../hooks/useAllLoans";
@@ -45,7 +45,7 @@ const CreateLoanUser = () => {
         },
         mutationFn: async (requestBody: RequestDto<LoanUserReqDto>) => {
             // console.log("Prepare sending:", requestBody)
-            const response = await axiosInstance.post<RespondDto<LoanResDto>>(d.apiUrl.loan.POST_CREATE_LOAN_USER, requestBody);
+            const response = await axiosInstance.post<RespondDto<LoanReqDto>>(d.apiUrl.loan.POST_CREATE_LOAN_USER, requestBody);
             return response.data;
         },
         onSuccess: async (data) => {

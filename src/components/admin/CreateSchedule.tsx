@@ -11,7 +11,8 @@ import {formatDate} from '../../utils/helpers';
 import useAllLoans from "../../hooks/useAllLoans";
 
 const scheduleSourceEnum = ["BORROWER", "LENDER"] as const;
-const scheduleStatusEnum = ["FUTURE", "ON_TIME", "PREPAID", "PAST"] as const;
+
+const scheduleStatusEnum = ["FUTURE", "ON_TIME", "PREPAID", "PAST", "PAST_DUE_5", "PAST_DUE_30", "PAST_DUE_60", "PAST_DUE_90"] as const;
 const scheduleDelinquencyEnum = ["ZERO", "THIRTY", "SIXTY", "NINETY", "DEFAULT"] as const;
 
 const formSchema: ZodSchema<ScheduleReqDto> = z.object({

@@ -1,6 +1,6 @@
 // hooks/useCreateLoan.ts
 import { useMutation } from "@tanstack/react-query";
-import {LoanResDto, RequestDto, RespondDto} from "../types";
+import {LoanReqDto, RequestDto, RespondDto} from "../types";
 import axiosInstance from "../api/axiosInstance";
 import queryClient from "../utils/clients/queryClient";
 import d from "../constant/constant";
@@ -8,8 +8,8 @@ import d from "../constant/constant";
 // Custom hook to create a loan
 const useCreateLoan = () => {
     return useMutation({
-        mutationFn: async (requestBody: RequestDto<LoanResDto>) => {
-            return await axiosInstance.post<RespondDto<LoanResDto>>(d.apiUrl.loan.POST_A_SINGLE_LOAN, requestBody);
+        mutationFn: async (requestBody: RequestDto<LoanReqDto>) => {
+            return await axiosInstance.post<RespondDto<LoanReqDto>>(d.apiUrl.loan.POST_A_SINGLE_LOAN, requestBody);
         },
         onSuccess: async (data) => {
             console.log("Create loan successfully:", data.data.data);

@@ -1,37 +1,88 @@
-import React, {useEffect} from "react";
-import BgNavWavBackground from "../../images/nav-wav-background.svg";
-import PlayerSVG from "../../images/play.svg";
-import questionSvg from "../../images/question-mark-svgrepo-com.svg";
-import questionWhiteSvg from "../../images/question-mark-svgrepo-com-white.svg";
-// import {useCurrentUserLoanQuery} from "../../../redux/app/services/loanApi";
-// import {useLoginMutation} from "../../../redux/app/services/authApi";
-// import {RespondDto, LoanResDto} from "../../../types/index";
+import React, {useCallback, useEffect, useState} from "react";
 import {formatDateToCustomString, formatDateToMDY} from "../../utils/date";
 import {useQuery} from "@tanstack/react-query";
 import d from "../../constant/constant"
 import axiosInstance from "../../api/axiosInstance";
-import {LoanResDto, PaymentResDto, RespondDto} from "../../types";
-// import {useLast4PaymentsQuery} from "../../../redux/app/services/paymentApi";
+import {PaymentResDto, RespondDto} from "../../types";
+import useAmountDue from "../../hooks/useAmountDue";
+import useScheduleToReceive from "../../hooks/useScheduleToReceive";
+import {formatDate} from "../../utils/helpers";
+import usePastDue from "../../hooks/usePastDue";
+import {GrCaretNext} from "react-icons/gr";
+import useDefaulLoanUser from "../../hooks/useDefaulLoanUser";
 
+
+type SwitchState = {
+    pastDueState: boolean;
+    scheduleToReceive: boolean;
+}
+
+
+const switchStateInit: SwitchState = {pastDueState: false, scheduleToReceive: true};
 
 const TheLoan = () => {
 
-    const cLoanQuery = useQuery({
-        queryKey: [d.key.DEFAULT_LOAN_CURRENT_USER_KEY],
-        queryFn: async () => {
-            return axiosInstance.get<RespondDto<LoanResDto>>(d.f2f.loan.DEFAULT_LOAN_CURRENT_USER_URL)
-        },
-        retry: 3,
-        staleTime: 60000, // Prevents automatic refetch due to staleness
-        refetchOnMount: true, // Ensures refetching on component remount
-        refetchOnWindowFocus: false, // Prevents refetching on window focus
-        refetchOnReconnect: false, // Prevents refetching on network reconnect
+    const [switchState, setSwitchState] = useState<SwitchState>(switchStateInit);
+
+    const handleSwitchState = useCallback(() => {
+        setSwitchState((prevState) => ({
+            pastDueState: !prevState.pastDueState,
+            scheduleToReceive: !prevState.scheduleToReceive,
+        }));
+    }, []);
+
+    const {
+        data: amountDueData,
+        isLoading: isAmoutDueLoanding,
+        isError: isAmoutError,
+        error: amoutDueError
+    } = useAmountDue();
+
+    const {
+        data: passDueData,
+        isLoading: isPassDueLoanding,
+        isError: isPassError,
+        error: passDueError
+    } = usePastDue();
+
+    const {
+        data: scheduleToReceiveData,
+        isLoading: isScheduleToRecevieLoaing,
+        isError: isScheduleToReceiveError,
+        error: scheduleToReceiveError,
+    } = useScheduleToReceive()
 
 
+    useEffect(() => {
+        console.log("Amount Due Data: ", amountDueData);
+        console.log("Amount Due Error: ", amoutDueError);
+    }, [amountDueData, amoutDueError]);
 
-    })
+
+    useEffect(() => {
+        console.log("scheduleToReceiveData", scheduleToReceiveData);
+        console.log("scheduleToReceiveError", scheduleToReceiveError);
+    }, [scheduleToReceiveData, scheduleToReceiveError, isScheduleToReceiveError, isScheduleToRecevieLoaing]);
+
+    useEffect(() => {
+        console.log("passDueData", passDueData);
+        console.log("passDueError", passDueError);
+    }, [passDueError, passDueData]);
 
 
+    const {
+        data: defaultLoanUserData,
+        isLoading: isDefaultLoanUserLoading,
+        isError: isDefaultLoanUserError,
+        error: defaultLoanUserError
+    } = useDefaulLoanUser();
+
+
+    useEffect(() => {
+        console.log("defaultLoanUserData", defaultLoanUserData);
+        console.log("defaultLoanUserError", defaultLoanUserError);
+
+    }, [defaultLoanUserData, defaultLoanUserError]);
 
     const last4payments = useQuery({
         queryKey: [d.key.LAST_4_PAYMENTS_KEY],
@@ -65,80 +116,239 @@ const TheLoan = () => {
                 <div className="due_amount_and_pass_due w-full my-8 ">
                     <div
                         className="table-loan-wrapper font-satoshi flex flex-col md:flex-row gap-4 justify-between w-full ">
-                        {/* left section */}
-                        <div
-                            className="head-right p-1 sm:p-2 flex flex-col items-start justify-between gap-3 self-start grow h-[300px] md:p-4 w-full  rounded-md  my-shadow">
+                        {/* left section bor borrower*/}
+                        {
+                            (defaultLoanUserData?.data?.data?.role === "BORROWER") &&
                             <div
-                                className="section-top-one-of-amount  w-full flex flex-row justify-between items-start ">
-                                {/* section Amount Due */}
-                                <div className="section-amount w-full flex flex-col gap-0 sm:gap-1">
-                                    {/* amount */}
-                                    <div className="section-amount flex flex-row gap-1 sm:gap-3 items-center w-full">
-                                        <p className="font-medium whitespace-nowrap text-md  md:text-xl lg:text-2xl">
-                                            Amount Due
-                                        </p>
-                                        <p className="h-4 w-4 bg-[#eef9f9] rounded-full flex items-center justify-center">
-                                            <img
-                                                className="h-3"
-                                                src={questionSvg}
-                                                alt=""
-                                            />
-                                        </p>
+                                className="head-right p-1 sm:p-2 flex flex-col items-start justify-between gap-3 self-start  md:p-4 w-full  rounded-md  my-shadow">
+
+
+                                {/*Left section top-1*/}
+                                <div
+                                    className="wrapper-both-left-section flex flex-row gap-2 justify-between items-center w-full">
+                                    <div className="left-setion-1 ">
+
+                                        <div className="whitespace-nowrap font-medium mr-2">You are schedule to pay:
+                                        </div>
+                                        <div
+                                            className="font-bold sm:font-medium whitespace-nowrap text-base sm:text-xl lg:text-2xl ">
+                                            <span>$</span>
+                                            <span>
+                                            {
+                                                (amountDueData?.data?.data)
+                                                    ? (
+                                                        <>
+                                                            {amountDueData?.data?.data?.due}
+                                                        </>) :
+                                                    (
+                                                        <span>0</span>)
+                                            }</span>
+                                        </div>
+                                        <div className="whitespace-nowrap font-medium mr-2">
+
+                                                <span>
+                                                {
+                                                    (amountDueData?.data?.data?.createdAt) ?
+                                                        (
+                                                            <span>{"By " + formatDate(amountDueData?.data?.data?.createdAt as string)}</span>)
+                                                        :
+                                                        (<span>By 0000, 0, 0000</span>)
+                                                }
+                                            </span>
+
+
+                                        </div>
+
                                     </div>
-                                    {/* amount of money */}
-                                    <div className="amount-of-money font-medium text-md lg:text-xl">
-                                        $ <span>{cLoanQuery.data?.data?.data?.amount}</span>
+
+                                    <div className="left-setion-2 relative">
+
+                                        {
+                                            switchState?.scheduleToReceive && (
+                                                <>
+                                                    <div className="whitespace-nowrap font-medium mr-2">
+                                                        You are scheduled to receive:
+                                                    </div>
+                                                    <div
+                                                        className="font-bold sm:font-medium whitespace-nowrap text-base sm:text-xl lg:text-2xl ">
+                                                        <span>$</span>
+                                                        <span>
+                                                        {
+                                                            (scheduleToReceiveData?.data?.data) ?
+                                                                (<span>{scheduleToReceiveData.data.data?.due}</span>)
+                                                                :
+                                                                (<span>0</span>)
+                                                        }
+                                                     </span>
+                                                    </div>
+                                                    <div className="whitespace-nowrap font-medium mr-2">
+                                                    <span>
+                                                        {
+                                                            (scheduleToReceiveData?.data?.data?.createdAt) ?
+                                                                (
+                                                                    <span>{"By " + formatDate(scheduleToReceiveData.data.data?.createdAt)}</span>)
+                                                                :
+                                                                (<span>By 0000, 0, 0000</span>)
+                                                        }
+                                                    </span>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+
+
+                                        {
+                                            switchState?.pastDueState &&
+                                            (
+                                                <>
+                                                    <div className="whitespace-nowrap text-red-500 font-medium mr-2">
+                                                        You have a past due balance!
+                                                    </div>
+                                                    <div
+                                                        className="font-bold sm:font-medium whitespace-nowrap text-base text-red-500 sm:text-xl lg:text-2xl ">
+                                                        ${passDueData?.data?.data?.due ? passDueData?.data?.data?.due : "0"}
+                                                    </div>
+                                                    <div className="whitespace-nowrap text-red-500 font-medium mr-2">Pay
+                                                        now
+                                                        or contact to FiMguide!
+                                                    </div>
+
+                                                </>
+                                            )
+                                        }
+
+                                        <button onClick={handleSwitchState}
+                                                className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 right-0">
+                                            <GrCaretNext/>
+                                        </button>
+
+
                                     </div>
-                                    {/* date of amount */}
-                                    <div className="date-of-amount font-medium whitespace-nowrap text-md lg:text-xl">
-                                        {formatDateToCustomString(
-                                            cLoanQuery.data?.data?.data?.createdDate as string
-                                        )}
-                                    </div>
+
+
                                 </div>
 
-                                {/* Section pass due */}
-                                <div className=" flex flex-row gap-1 sm:gap-3 items-center">
-                                    <p className="font-medium whitespace-nowrap text-red-500 text-md md:text-xl lg:text-2xl">
-                                        Pass Due
-                                    </p>
-                                    <p className="h-4 w-4 bg-red-500 rounded-full flex items-center justify-center">
-                                        <img
-                                            className="h-3"
-                                            src={questionWhiteSvg}
-                                            alt=""
-                                        />
-                                    </p>
-                                </div>
                             </div>
 
-                            {/* Button maker payment */}
-                            <button
-                                className="button-maker-payment text-center font-normal md:font-medium text-md md:text-xl lg:text-2xl w-full rounded-md border py-2 lg:py-4">
-                                Make a payment
-                            </button>
-                            {/* button section */}
-                            <div className="button-section w-full flex flex-col gap-0 sm:gap-2">
+                        }
+
+
+                        {/* left section */}
+                        {
+                            (defaultLoanUserData?.data?.data?.role === "LENDER") &&
+                            <div
+                                className="head-right p-1 sm:p-2 flex flex-col items-start justify-between gap-3 self-start  md:p-4 w-full  rounded-md  my-shadow">
+
+
+                                {/*Left section top-1*/}
                                 <div
-                                    className="remaining-of-balance flex flex-col lg:flex-row justify-between items-center ">
-                                    <div className="left font-bold text-lg whitespace-nowrap">
-                                        Balance Remaining:
+                                    className="wrapper-both-left-section flex flex-row gap-2 justify-between items-center w-full">
+                                    <div className="left-setion-1 relative">
+
+                                        {
+                                            switchState?.scheduleToReceive && (
+                                                <>
+                                                    <div className="whitespace-nowrap font-medium mr-2">
+                                                        You are scheduled to receive:
+                                                    </div>
+                                                    <div
+                                                        className="font-bold sm:font-medium whitespace-nowrap text-base sm:text-xl lg:text-2xl ">
+                                                        <span>$</span>
+                                                        <span>
+                                                        {
+                                                            (amountDueData?.data?.data) ?
+                                                                (<span>{amountDueData.data.data?.due}</span>)
+                                                                :
+                                                                (<span>0</span>)
+                                                        }
+                                                     </span>
+                                                    </div>
+                                                    <div className="whitespace-nowrap font-medium mr-2">
+                                                    <span>
+                                                        {
+                                                            (amountDueData?.data?.data?.createdAt) ?
+                                                                (
+                                                                    <span>{"By " + formatDate(amountDueData.data.data?.createdAt)}</span>)
+                                                                :
+                                                                (<span>By 0000, 0, 0000</span>)
+                                                        }
+                                                    </span>
+                                                    </div>
+                                                </>
+                                            )
+                                        }
+
+
+                                        {/*Copy from borrower have made any changes yet, careful before you, but this code already be disabled via button*/}
+                                        {
+                                            switchState?.pastDueState &&
+                                            (
+                                                <>
+                                                    <div className="whitespace-nowrap text-red-500 font-medium mr-2">
+                                                        You have a past due balance!
+                                                    </div>
+                                                    <div
+                                                        className="font-bold sm:font-medium whitespace-nowrap text-base text-red-500 sm:text-xl lg:text-2xl ">
+                                                        ${passDueData?.data?.data?.due ? passDueData?.data?.data?.due : "0"}
+                                                    </div>
+                                                    <div className="whitespace-nowrap text-red-500 font-medium mr-2">Pay
+                                                        now
+                                                        or contact to FiMguide!
+                                                    </div>
+
+                                                </>
+                                            )
+                                        }
+
+                                        {/*<button onClick={handleSwitchState}*/}
+                                        {/*        className="absolute -translate-x-1/2 -translate-y-1/2 top-1/2 right-0">*/}
+                                        {/*    <GrCaretNext/>*/}
+                                        {/*</button>*/}
+
+
                                     </div>
-                                    <div className="right whitespace-nowrap font-medium">
-                                        $7,603.97 as of 10/1/2024
+                                    <div className="left-setion-2 ">
+
+                                        <div className="whitespace-nowrap font-medium mr-2">You are schedule to pay:
+                                        </div>
+                                        <div
+                                            className="font-bold sm:font-medium whitespace-nowrap text-base sm:text-xl lg:text-2xl ">
+                                            <span>$</span>
+                                            <span>
+                                            {
+                                                (scheduleToReceiveData?.data?.data)
+                                                    ? (
+                                                        <>
+                                                            {scheduleToReceiveData?.data?.data?.due}
+                                                        </>) :
+                                                    (
+                                                        <span>0</span>)
+                                            }</span>
+                                        </div>
+                                        <div className="whitespace-nowrap font-medium mr-2">
+
+                                                <span>
+                                                {
+                                                    (scheduleToReceiveData?.data?.data?.createdAt) ?
+                                                        (
+                                                            <span>{"By " + formatDate(scheduleToReceiveData?.data?.data?.createdAt as string)}</span>)
+                                                        :
+                                                        (<span>By 0000, 0, 0000</span>)
+                                                }
+                                            </span>
+
+
+                                        </div>
+
                                     </div>
+
+
                                 </div>
-                                <div
-                                    className="payoff-of-balance flex flex-col lg:flex-row justify-between items-center ">
-                                    <div className="left font-bold whitespace-nowrap text-lg">
-                                        Payoff Amount:
-                                    </div>
-                                    <div className="right whitespace-nowrap font-medium">
-                                        $7,603.97 as of 10/15/2024
-                                    </div>
-                                </div>
+
                             </div>
-                        </div>
+
+                        }
+
 
                         <div
                             className="head-right p-1 sm:p-2 flex flex-col items-start justify-between gap-3 self-start grow w-full h-[300px] md:p-4  rounded-md  my-shadow">
@@ -156,7 +366,7 @@ const TheLoan = () => {
                                                 <p className=" whitespace-nowrap font-medium mr-2">
                                                     Loan Amount
                                                 </p>
-                                                <p>${cLoanQuery.data?.data?.data?.amount}</p>
+                                                <p>${defaultLoanUserData?.data?.data?.amount}</p>
                                             </div>
                                             <div className="loan-amount flex flex-row justify-between">
                                                 <p className=" whitespace-nowrap font-medium mr-2">
@@ -164,7 +374,7 @@ const TheLoan = () => {
                                                 </p>
                                                 <p>
                                                     {formatDateToMDY(
-                                                        cLoanQuery.data?.data?.data?.createdDate as string
+                                                        defaultLoanUserData?.data?.data?.createdDate as string
                                                     )}
                                                 </p>
                                             </div>
@@ -173,7 +383,7 @@ const TheLoan = () => {
                                                     Interest
                                                 </p>
                                                 <p>
-                                                    {cLoanQuery.data?.data?.data?.interest}
+                                                    {defaultLoanUserData?.data?.data?.interest}
                                                     <span>%</span>
                                                 </p>
                                             </div>
@@ -184,7 +394,7 @@ const TheLoan = () => {
                                                 </div>
                                                 <div className=" whitespace-nowrap ">
                                                     {formatDateToCustomString(
-                                                        cLoanQuery.data?.data?.data?.endDate as string
+                                                        defaultLoanUserData?.data?.data?.endDate as string
                                                     )}
                                                 </div>
                                             </div>
@@ -235,15 +445,6 @@ const TheLoan = () => {
                     </div>
                     {/* ☝️ End of wrapper  */}
 
-                    {/* section 2 - make payment */}
-                    {/* <div className="section2-make-payment w-full flex flex-row justify-between">
-              <button className="px-14 py-4 font-bold  rounded-sm border bg-[#f6f7f8] ">
-                Make Payment
-              </button>
-              <div className="payment-timeine text-3xl font-bold text-start  md:w-[400px]">
-                <p>Payment Timeliness:</p>
-              </div>
-            </div> */}
 
                     {/* Payment Histor */}
                     <div className="payment-history font-satoshi font-bold text-2xl w-full mt-8">
@@ -265,16 +466,6 @@ const TheLoan = () => {
                             </tr>
                             </thead>
                             <tbody className="text-base whitespace-nowrap">
-                            {/* <tr className="text-center h-fit">
-                  <td className="border px-2">10/01/2024</td>
-                  <td className="border px-2">10/01/2024</td>
-                  <td className="border px-2">Payment</td>
-                  <td className="border px-2">On time</td>
-                  <td className="border px-2">$50.69</td>
-                  <td className="border px-2">$200.00</td>
-                  <td className="border px-2">$250.69</td>
-                  <td className="border px-2">$7,603.97</td>
-                </tr> */}
 
                             {last4payments.isLoading && (
                                 <tr>
