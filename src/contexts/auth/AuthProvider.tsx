@@ -1,5 +1,4 @@
-import React, {ReactNode, useEffect, useState} from 'react';
-import d from "../../constant/constant"
+import React, {ReactNode} from 'react';
 import {AuthContext} from "./AuthContext";
 
 interface AuthProviderProps {

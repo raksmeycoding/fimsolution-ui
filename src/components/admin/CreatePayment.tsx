@@ -1,12 +1,11 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {z} from 'zod';
 import {FaEdit, FaRegSave} from 'react-icons/fa';
 import useCreatePayment from '../../hooks/useCreatePayment'; // Custom hook to handle payment submission
 import useAllSchedules from '../../hooks/useAllSchedules'; // Hook to fetch schedules
-import {PaymentReqDto, PaymentResDto, ScheduleResDto} from '../../types';
-import {formatDate} from '../../utils/helpers';
+import {PaymentReqDto, ScheduleResDto} from '../../types';
 import {useAllPayments} from "../../hooks/useAllPayments";
 import useAllLoans from "../../hooks/useAllLoans";
 import {MdDeleteOutline} from "react-icons/md";

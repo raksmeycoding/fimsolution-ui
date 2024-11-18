@@ -1,18 +1,11 @@
-import React, {ChangeEvent, EventHandler, useEffect, useState} from "react";
-import FimLogo from "../../images/logo-finance.svg";
+import React, {useEffect, useState} from "react";
 import iconSearch from "../../images/icon-search.svg";
 import d from "../../constant/constant"
 import useInputHook from "../../hooks/useInputHook";
 import {NavLink, useNavigate} from "react-router-dom";
 import BurgerMenu from "../../images/burger-menu-svgrepo-com.svg";
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 import axiosInstance from "../../api/axiosInstance";
-
-import useAuth from "../../contexts/auth/useAuth";
-import {RespondDto} from "../../types";
-import {ResponseUserInfo} from "../../types/auth";
-import {setAccessToken} from "../../utils/tokenSerivce";
-import queryClient from "../../utils/clients/queryClient";
 
 
 function Navbar() {

@@ -4,11 +4,7 @@ import {z, ZodSchema} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {FaEdit, FaRegSave} from 'react-icons/fa';
 import {MdDeleteOutline} from 'react-icons/md';
-import {useMutation, useQuery} from "@tanstack/react-query";
-import axiosInstance from "../../api/axiosInstance";
-import {RequestDto, RespondDto} from "../../types";
-import d from "../../constant/constant"
-import queryClient from "../../utils/clients/queryClient";
+import {RequestDto} from "../../types";
 import useCreateUser from "../../hooks/uesCreateUser";
 import useUsers from "../../hooks/useUsers";
 

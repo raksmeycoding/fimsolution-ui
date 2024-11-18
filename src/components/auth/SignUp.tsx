@@ -4,7 +4,6 @@ import toast, {Toaster} from "react-hot-toast";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import {Controller, useForm} from "react-hook-form";
-import {DevTool} from "@hookform/devtools";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {GoogleLogin, GoogleOAuthProvider} from "@react-oauth/google";

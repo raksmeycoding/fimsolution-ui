@@ -1,10 +1,6 @@
 import React from 'react';
 import {z, ZodSchema} from "zod";
-import {LoanReqDto, RequestDto, RespondDto} from "../../types";
-import {useMutation, useQuery} from "@tanstack/react-query";
-import axiosInstance from "../../api/axiosInstance";
-import d from "../../constant/constant";
-import queryClient from "../../utils/clients/queryClient";
+import {LoanReqDto, RequestDto} from "../../types";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {FaEdit, FaRegSave} from "react-icons/fa";

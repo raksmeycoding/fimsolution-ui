@@ -1,7 +1,6 @@
-import React from 'react';
 import {useQuery} from "@tanstack/react-query";
 import axiosInstance from "../api/axiosInstance";
-import {RequestDto, RespondDto} from "../types";
+import {RespondDto} from "../types";
 import d from "../constant/constant"
 import {ScheduleAmountDueResDto} from "../types/schedule";
 

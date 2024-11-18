@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent, useState } from "react";
+import {ChangeEvent, FocusEvent, useState} from "react";
 
 function useInputHook() {
   const [isInputFocused, setIsInputFocused] = useState(false);

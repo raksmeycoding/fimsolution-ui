@@ -1,14 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import {Link, Navigate, useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {jwtDecode, JwtPayload} from 'jwt-decode';
-import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
+import {useMutation, useQuery} from '@tanstack/react-query';
 import axiosInstance from '../../api/axiosInstance';
 import {RespondDto} from '../../types';
 import {ResponseUserInfo} from '../../types/auth';
 import {setAccessToken} from '../../utils/tokenSerivce';
 import d from '../../constant/constant';
 import queryClient from '../../utils/clients/queryClient';
-import toast from "react-hot-toast";
 
 
 interface ProtectedRouteProps {

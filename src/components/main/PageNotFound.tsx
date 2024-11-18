@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React from "react";
 import BgNavWavBackground from "../../images/page-not-found.svg";
 import {Link} from "react-router-dom";
 
