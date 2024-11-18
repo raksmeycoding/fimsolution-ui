@@ -1,5 +1,4 @@
 import React from "react";
-import BgNavWavBackground from "../../images/page-not-found.svg";
 import {Link} from "react-router-dom";
 
 
@@ -42,7 +41,6 @@ function PageNotFound() {
                     <div className="w-full md:w-1/2 text-center">
                         <img
                             alt="404Picture"
-                            src={BgNavWavBackground}
                         />
                         {/* <a
               href="https://www.freepik.com/vectors/business"

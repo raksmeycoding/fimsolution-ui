@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {jwtDecode, JwtPayload} from 'jwt-decode';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import axiosInstance from '../../api/axiosInstance';
