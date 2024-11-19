@@ -1,4 +1,5 @@
-/secure/page
+/*
+  X-TEST: TEST
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
