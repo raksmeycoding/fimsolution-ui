@@ -1,14 +1,18 @@
-/secure/page
+/*
+  Cache-Control: max-age=31536000
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-XSS-Protection: 1; mode=block
+  Permissions-Policy: geolocation=(self), camera=()
 
 /static/*
   Access-Control-Allow-Origin: *
   X-Robots-Tag: nosnippet
+  Cache-Control: public, max-age=31536000, immutable
 
 https://fimsolution-ui.pages.dev/*
   X-Robots-Tag: noindex
-
-/*
-Cache-Control: max-age=31536000
+  Expect-CT: max-age=86400, enforce, report-uri="https://example.com/report"
+  X-Download-Options: noopen
