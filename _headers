@@ -1,5 +1,4 @@
-/*
-  X-TEST: TEST
+/secure/page
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: no-referrer
@@ -10,3 +9,6 @@
 
 https://fimsolution-ui.pages.dev/*
   X-Robots-Tag: noindex
+
+/*
+Cache-Control: max-age=31536000
