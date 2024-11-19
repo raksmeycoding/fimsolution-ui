@@ -116,6 +116,7 @@ function Navbar() {
                 <div className="inputBox-with-search-icon relative flex flex-row items-center">
                     <div className="bg-white w-[300px] h-[45px] absolute rounded-md"></div>
 
+
                     <div className="nav-search-and-text flex flex-row  absolute items-center gap-2 px-2">
                         {!isInputFocused && !isRemainingText && (
                             <>
