@@ -118,6 +118,11 @@ function Navbar() {
 
     }, [isClickBur]);
 
+
+    const handleAutoCloseBurger = () => {
+        setIsClickBur(false);
+        localStorage.setItem(burgerInit.burgerKey, "0");
+    }
     return (
         <>
             {
@@ -268,7 +273,7 @@ function Navbar() {
                                         isActive ? "text-teal-500 self-start px-4 font-semibold nav-menu" : isPending ? "" : "self-start px-4 font-semibold nav-menu"
                                     }
                                 >
-                                    <p>Home</p>
+                                    <button onClick={handleAutoCloseBurger}>Home</button>
                                 </NavLink>
                                 <NavLink
                                     to={"/fim-score"}
@@ -276,7 +281,7 @@ function Navbar() {
                                         isActive ? "text-teal-500 self-start px-4 font-semibold nav-menu" : isPending ? "" : "self-start px-4 font-semibold nav-menu"
                                     }
                                 >
-                                    <p>FiMscore</p>
+                                    <button onClick={handleAutoCloseBurger}>FiMscore</button>
                                 </NavLink>
                                 <NavLink
                                     to={"/about"}
@@ -284,7 +289,7 @@ function Navbar() {
                                         isActive ? "text-teal-500 self-start px-4 font-semibold nav-menu" : isPending ? "" : "self-start px-4 font-semibold nav-menu"
                                     }
                                 >
-                                    <p>About Us</p>
+                                    <button onClick={handleAutoCloseBurger}>About Us</button>
                                 </NavLink>
                                 <NavLink
                                     to={"/help"}
@@ -292,7 +297,7 @@ function Navbar() {
                                         isActive ? "text-teal-500 self-start px-4 font-semibold nav-menu" : isPending ? "" : "self-start px-4 font-semibold nav-menu"
                                     }
                                 >
-                                    <p>Help</p>
+                                    <button onClick={handleAutoCloseBurger}>Help</button>
                                 </NavLink>
                                 <NavLink
                                     to={"/my-loan"}
@@ -300,7 +305,7 @@ function Navbar() {
                                         isActive ? "text-teal-500 self-start px-4 font-semibold nav-menu" : isPending ? "" : "self-start px-4 font-semibold nav-menu"
                                     }
                                 >
-                                    <p>My Loan</p>
+                                    <button onClick={handleAutoCloseBurger}>My Loan</button>
                                 </NavLink>
 
                             </div>
