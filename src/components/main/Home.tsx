@@ -1,5 +1,6 @@
 import React from 'react';
 import PlayerSVG from "../../images/play.svg";
+import {Link} from "react-router-dom";
 
 const Home = () => {
     return (
@@ -69,12 +70,16 @@ const Home = () => {
                         </p>
 
                         <div className="button-login-and-signup flex flex-row gap-8 mt-2">
-                            <button className="w-[80px] sm:w-[110px] h-8 sm:h-10 rounded-md bg-black text-white">
-                                Sign Up
-                            </button>
-                            <button className="w-[80px] sm:w-[110px] h-8  sm:h-10 rounded-md border border-black">
-                                Login
-                            </button>
+                            <Link to="/signup">
+                                <button className="w-[80px] sm:w-[110px] h-8 sm:h-10 rounded-md bg-black text-white">
+                                    Sign Up
+                                </button>
+                            </Link>
+                            <Link to="/login">
+                                <button className="w-[80px] sm:w-[110px] h-8  sm:h-10 rounded-md border border-black">
+                                    Login
+                                </button>
+                            </Link>
                         </div>
                     </div>
                 </div>

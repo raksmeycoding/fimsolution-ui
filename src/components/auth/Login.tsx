@@ -17,6 +17,7 @@ import d from "../../constant/constant"
 import {AxiosError} from "axios";
 import useAuth from "../../contexts/auth/useAuth";
 import {jwtDecode, JwtPayload} from "jwt-decode";
+import {IoArrowBackCircleOutline} from "react-icons/io5";
 
 // const successNotify = () => toast.success("Login successful");
 const errorNotify = (errorMessage: any) => toast.error(errorMessage);
@@ -137,18 +138,25 @@ function Login() {
                     className=" bg-gradient-to-tl from-[#3b7c85] h-screen  flex flex-row justify-center items-center to-[#28ffff] w-full"
                     noValidate
                 >
+
                     <div
                         className="flex flex-col items-center justify-center min-w-[320px] sm:w-[400px] md:w-[450px] lg:w-[600px]">
-                        {/* <div className="log text-3xl font-bold font-satoshi tracking-widest">
-            FiMsolution
-          </div> */}
 
-                        <div className="bg-white shadow rounded w-full  p-10 mt-4">
+
+                        <div className="bg-white shadow rounded w-full  p-10 mt-4 ">
+
+                            <Link to="/">
+                                <div
+                                    className="back-to-home flex flex-row gap-2 items-center bg-gray-200 rounded p-1 w-fit px-2 cursor-pointer ">
+                                    <IoArrowBackCircleOutline/> <span>Back</span>
+                                </div>
+                            </Link>
+
                             <p
                                 tabIndex={0}
-                                className="focus:outline-none text-2xl font-extrabold leading-6 text-gray-800"
+                                className="focus:outline-none text-2xl font-extrabold leading-6 text-gray-800 mt-4"
                             >
-                                Login to your account
+                            Login to your account
                             </p>
 
                             <p

@@ -11,6 +11,7 @@ import {useMutation} from "@tanstack/react-query";
 import axiosInstance from "../../api/axiosInstance";
 import {RequestDto} from "../../types";
 import {RegisterRequest} from "../../types/auth";
+import {IoArrowBackCircleOutline} from "react-icons/io5";
 
 
 type FormValues = {
@@ -175,9 +176,18 @@ function SignUP() {
           </div> */}
 
                         <div className="bg-white shadow rounded  w-full p-10 mt-4">
+
+
+                            <Link to="/">
+                                <div
+                                    className="back-to-home flex flex-row gap-2 items-center bg-gray-200 rounded p-1 w-fit px-2 cursor-pointer ">
+                                    <IoArrowBackCircleOutline/> <span>Back</span>
+                                </div>
+                            </Link>
+
                             <p
                                 tabIndex={0}
-                                className="focus:outline-none text-2xl font-extrabold leading-6 text-gray-800"
+                                className="focus:outline-none text-2xl font-extrabold leading-6 text-gray-800 mt-4"
                             >
                                 Sign Up to create your account
                             </p>
