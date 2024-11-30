@@ -40,7 +40,7 @@ function Navbar() {
     })
 
     useEffect(() => {
-        console.log("Burger is clicked: ", isClickBur)
+        // console.log("Burger is clicked: ", isClickBur)
     }, [isClickBur])
 
     // useEffect(() => {
@@ -51,7 +51,7 @@ function Navbar() {
     const handleOnClickBur = () => {
         const value = localStorage.getItem(burgerInit.burgerKey);
 
-        console.log("Burger is clicked: ", value)
+        // console.log("Burger is clicked: ", value)
         // Animate dropdown menu closing
         setIsClickBur((prevState) => {
             if (value === "0" || value === null) {

@@ -92,8 +92,8 @@ function Login() {
         }
     })
     useEffect(() => {
-        console.log("Watch isAuthenticated state:", isAuthenticated)
-        console.log("Watch token:", token)
+        // console.log("Watch isAuthenticated state:", isAuthenticated)
+        // console.log("Watch token:", token)
     }, [isAuthenticated, setIsAuthenticated, setToken, token]);
 
     // Define default value of Login from using react-hook-form
