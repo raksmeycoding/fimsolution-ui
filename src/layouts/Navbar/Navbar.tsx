@@ -39,13 +39,22 @@ function Navbar() {
         }
     })
 
+    useEffect(() => {
+        console.log("Burger is clicked: ", isClickBur)
+    }, [isClickBur])
 
+    // useEffect(() => {
+    //     // Animate dropdown menu opening
+    //     gsap.to('.nav-menu', {height: isClickBur ? '0' : 'auto', opacity: isClickBur ? 0 : 1, duration: 0.5});
+    // }, [isClickBur])
 
     const handleOnClickBur = () => {
         const value = localStorage.getItem(burgerInit.burgerKey);
+
+        console.log("Burger is clicked: ", value)
         // Animate dropdown menu closing
         setIsClickBur((prevState) => {
-            if (value === "0") {
+            if (value === "0" || value === null) {
                 localStorage.setItem(burgerInit.burgerKey, "1")
                 return !prevState;
             }
@@ -89,6 +98,16 @@ function Navbar() {
             anime({
                 targets: '.nav-menu',
                 opacity: [0, 1],  // Transition opacity from 0 to 1
+                // translateY: ['-50px', '0'], // Transition translateY (slide from -50px to 0)
+                // easing: 'easeInOutQuad', // Easing function to make the transition smooth
+                translateX: ['-100%', '0%'], // Move the element from off-screen left (-100%) to its original position (0%)
+                easing: 'easeOutQuad', // Easing function for smooth transition
+                duration: 1000, // Duration of the animation (in ms)
+            });
+        } else {
+            anime({
+                targets: '.nav-menu',
+                opacity: [0, 0],  // Transition opacity from 0 to 1
                 // translateY: ['-50px', '0'], // Transition translateY (slide from -50px to 0)
                 // easing: 'easeInOutQuad', // Easing function to make the transition smooth
                 translateX: ['-100%', '0%'], // Move the element from off-screen left (-100%) to its original position (0%)
