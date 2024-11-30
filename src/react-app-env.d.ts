@@ -26,11 +26,17 @@ declare module "*.svg" {
 }
 
 
+declare module 'animejs/lib/anime.es.js' {
+    var anime: any;
+    export = anime;
+}
+
 declare namespace NodeJS {
     interface ProcessEnv {
         REACT_APP_MODE: string;
         REACT_APP_API_ENDPOINT: string;
         REACT_APP_ACCESS_TOKEN_KEY: string;
+        REACT_APP_API_ENDPOINT_DEV: string
     }
 }
 

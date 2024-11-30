@@ -6,7 +6,7 @@ import {getAccessToken, setAccessToken} from "../utils/tokenSerivce";
 
 
 const axiosInstance = axios.create({
-        baseURL: process.env.REACT_APP_API_ENDPOINT,
+        baseURL: process.env.REACT_APP_API_ENDPOINT_DEV,
         withCredentials: true, // Required to send cookies for refresh token
     })
 ;
