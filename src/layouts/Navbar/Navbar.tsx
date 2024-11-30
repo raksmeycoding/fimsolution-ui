@@ -251,7 +251,7 @@ function Navbar() {
 
 
                         <div
-                            className="absolute top-0 left-0 right-0 z-20 font-satoshi shadow-xl bg-[#d2f8d0] px-4 ">
+                            className="sticky top-0 left-0 right-0 z-20 font-satoshi shadow-xl bg-[#d2f8d0] px-4 ">
                             <div
                                 className="main-wrapper    flex flex-col items-center justify-between w-full gap-4 pb-4 pt-4">
 
