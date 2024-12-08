@@ -8,7 +8,6 @@ import {ResponseUserInfo} from '../../types/auth';
 import {setAccessToken} from '../../utils/tokenSerivce';
 import d from '../../constant/constant';
 import queryClient from '../../utils/clients/queryClient';
-import useLoanLists from "../../hooks/useLoanLists";
 
 
 interface ProtectedRouteProps {
