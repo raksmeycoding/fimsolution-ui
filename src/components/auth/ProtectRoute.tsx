@@ -58,7 +58,6 @@ const ProtectRoute: React.FC<ProtectedRouteProps> = ({children, allowedRoles}) =
         }
     }, [accessToken, allowedRoles, mutate]);
 
-    const hasAtLeastOneLoan = (loanListData?.data?.loanResDtoList?.length as number > 0);
 
     if (isRefreshing) {
         return (

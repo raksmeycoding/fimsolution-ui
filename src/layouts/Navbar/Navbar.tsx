@@ -70,7 +70,7 @@ function Navbar() {
 
     }
 
-    const [isLogin, setIsLogin] = useState<boolean>(() => {
+    const [isLogin] = useState<boolean>(() => {
         return localStorage.getItem(d.lStorageKey.STATUS_LOGIN_KEY) === "1"
     });
 
