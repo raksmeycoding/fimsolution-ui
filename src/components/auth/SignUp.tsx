@@ -106,7 +106,7 @@ function SignUP() {
     const registerMutation = useMutation({
         retry: false,
         mutationFn: async (request: RequestDto<RegisterRequest>) => {
-            return await axiosInstance.post<RequestDto<RegisterRequest>>("/auth/register", request)
+            return await axiosInstance.post<RequestDto<RegisterRequest>>("/v1/auth/register", request)
         },
         onSuccess: (data) => {
             navigate("/login")

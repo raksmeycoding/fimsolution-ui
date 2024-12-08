@@ -13,10 +13,11 @@ export const useAllPayments = () => {
             console.log("Response with data:", responseWithData);
             return responseWithData;
         },
-        retry: 1,
+        retry: 0,
         staleTime: Infinity,
-        refetchOnMount: true,
+        enabled: true,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
         refetchOnWindowFocus: false,
-        refetchOnReconnect: true,
     })
 }

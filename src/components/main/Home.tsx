@@ -19,7 +19,7 @@ const Home = () => {
                     <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl">
                         FiMsolution
                     </h1>
-                    <div className="flex text-base sm:text-lg md:text-xl flex-col justify-center items-center">
+                    <div className="flex text-base sm:text-lg md:text-[17px] flex-col justify-center items-center font-bold">
                         <p>Financial Management</p>
                         {/* <p>Solution</p> */}
                         <p>Designed to create your future</p>
@@ -39,9 +39,9 @@ const Home = () => {
                 {/* </div> */}
 
                 {/* -translate-x-1/2 -translate-y-1/2 left-1/2 absolute top-[650px] z-10 w-[1200px] */}
-                <div className="global_config w-12/12 mx-auto px-2 mt-12 sm:w-10/12 md:w-9/12 lg:8/12 ">
+                <div className="container mx-auto mt-9">
                     <div
-                        className="font-satoshi drop-shadow-xl tracking-wider text-base sm:text-lg md:text-xl text-center">
+                        className="font-satoshi drop-shadow-xl tracking-wider text-[17px] sm:text-[17px] md:text-[17px] text-center">
                         Lending to friends and family is a difficult decision to make and
                         often ends in the loss of not only money, but relationships. This is
                         why we are creating FiMloans, an online service that will make
@@ -54,29 +54,29 @@ const Home = () => {
 
                 {/* Section 2 */}
                 {/* px-2 sm:w-10/12 md:w-9/12 lg:8/12 */}
-                <div className="global_config w-12/12 mx-auto   mt-12">
+                <div className="global_config w-12/12 mx-auto   mt-12 bg-[#f6f7f8]">
                     <div
-                        className="font-satoshi bg-[#f6f7f8] h-[200px] py-4 sm:h-[300px] flex flex-col items-center justify-center   drop-shadow-md ">
+                        className="font-satoshi  h-[200px] py-4 sm:h-[300px] flex flex-col items-center justify-center container mx-auto">
                         <img
                             className="h-8 sm:h-10"
                             src={PlayerSVG}
                             alt="getStartPlayerSVG"
                         />
-                        <h3 className="getStartText text-xl sm:text-2xl md:text-3xl font-medium text-center mt-2">
+                        <h3 className="getStartText text-xl sm:text-2xl md:text-[24px] font-medium text-center mt-2">
                             Get Started
                         </h3>
-                        <p className="text-base sm:text-lg md:text-xl text-center leading-relaxed mt-2">
+                        <p className="text-base sm:text-[17px] md:[17px] text-center leading-relaxed mt-2">
                             Aenean consectetur odio in condimentum tristique.
                         </p>
 
-                        <div className="button-login-and-signup flex flex-row gap-8 mt-2">
+                        <div className="button-login-and-signup flex flex-row gap-8 mt-4">
                             <Link to="/signup">
                                 <button className="w-[80px] sm:w-[110px] h-8 sm:h-10 rounded-md bg-black text-white">
                                     Sign Up
                                 </button>
                             </Link>
                             <Link to="/login">
-                                <button className="w-[80px] sm:w-[110px] h-8  sm:h-10 rounded-md border border-black">
+                                <button className="w-[80px] sm:w-[110px] h-8  sm:h-10 rounded-md border border-black text-[17px]">
                                     Login
                                 </button>
                             </Link>

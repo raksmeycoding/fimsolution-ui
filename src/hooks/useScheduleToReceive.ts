@@ -10,11 +10,11 @@ const UseScheduleToReceive = () => {
         queryFn: async () => {
             return await axiosInstance.get<RespondDto<ScheduleAmountDueResDto>>(d.f2f.schedule.GET_BORROWER_YOU_ARE_SCHEDULE_BOTH_BORROWER_AND_LENDER)
         },
-        retry: 1,
+        retry: 0,
         staleTime: Infinity,
-        refetchOnReconnect: true,
+        refetchOnReconnect: false,
         refetchOnWindowFocus: false,
-        retryOnMount: true,
+        retryOnMount: false,
     })
 };
 

@@ -8,6 +8,7 @@ import {ResponseUserInfo} from '../../types/auth';
 import {setAccessToken} from '../../utils/tokenSerivce';
 import d from '../../constant/constant';
 import queryClient from '../../utils/clients/queryClient';
+import useLoanLists from "../../hooks/useLoanLists";
 
 
 interface ProtectedRouteProps {
@@ -17,13 +18,13 @@ interface ProtectedRouteProps {
 
 const ProtectRoute: React.FC<ProtectedRouteProps> = ({children, allowedRoles}) => {
     const [hasPermission, setHasPermission] = useState<boolean>(false);
-    // const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+
     const {data: accessToken} = useQuery<string>({
         queryKey: [d.key.ACCESS_TOKEN_KEY],
         staleTime: Infinity,
-        enabled: false, // Disable automatic fetching
+        enabled: false,
     });
-    // const navigate = useNavigate();
+
 
     const {mutate, isPending: isRefreshing} = useMutation({
         mutationFn: async () => {
@@ -34,13 +35,9 @@ const ProtectRoute: React.FC<ProtectedRouteProps> = ({children, allowedRoles}) =
             setAccessToken(data.data.token as string);
             queryClient.setQueryData([d.key.ACCESS_TOKEN_KEY], data.data.token); // Update token in cache
         },
-        // onError: () => {
-        //     // Handle token refresh errors, for example redirecting to login
-        //     toast.error("Error while trying to authenticate, please retry and login again");
-        //     navigate("/login")
-        // },
-
     });
+
+    const {data: loanListData} = useLoanLists();
 
     useEffect(() => {
         const tokenInCache: string | undefined = queryClient.getQueryData([d.key.ACCESS_TOKEN_KEY]);
@@ -55,11 +52,13 @@ const ProtectRoute: React.FC<ProtectedRouteProps> = ({children, allowedRoles}) =
                 const permission = allowedRoles.some(role => userRoles.includes(role));
                 setHasPermission(permission);
             } catch (error) {
-                console.error('Error decoding token:', error);
+                console.log("Failed to authenticate: ", error);
                 setHasPermission(false); // Handle decoding errors
             }
         }
     }, [accessToken, allowedRoles, mutate]);
+
+    const hasAtLeastOneLoan = (loanListData?.data?.loanResDtoList?.length as number > 0);
 
     if (isRefreshing) {
         return (
@@ -69,6 +68,15 @@ const ProtectRoute: React.FC<ProtectedRouteProps> = ({children, allowedRoles}) =
         );
     }
 
+
+    // if (!hasAtLeastOneLoan) {
+    //     return (
+    //         <div className="flex h-screen w-full items-center justify-center">
+    //             <HasAtLeastOneLoan/>
+    //         </div>
+    //     )
+    // }
+
     if (!hasPermission) {
         return (
             <div className="flex h-screen w-full items-center justify-center">
@@ -76,6 +84,7 @@ const ProtectRoute: React.FC<ProtectedRouteProps> = ({children, allowedRoles}) =
             </div>
         );
     }
+
 
     return <>{children}</>;
 };
@@ -95,6 +104,22 @@ export const UnAuthorizedPermission = () => {
         </div>
     );
 };
+
+
+export const HasAtLeastOneLoan = () => {
+    return (
+        <div className="flex h-screen w-full items-center justify-center flex-col">
+            <div>
+                <div className="text-3xl font-bold text-gray-500">
+                    You have no any loan associated.
+                </div>
+                <span className="self-center font-bold text-red-400 mr-4"><Link to="/">Home</Link></span>
+                <span className="self-center font-bold text-blue-400"><Link to="/login">Go to login</Link></span>
+            </div>
+        </div>
+    );
+};
+
 
 export const LoadingComponent = () => {
     return (

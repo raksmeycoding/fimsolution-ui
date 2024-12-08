@@ -12,12 +12,12 @@ const useAllLoans = () => {
             const response = await axiosInstance.get<RespondDto<LoanResDto[]>>(d.apiUrl.loan.GET_ALL_LOAN);
             return response.data; // Assuming your API response structure has the 'data' field
         },
-        retry: 2, // Retry on failure up to 2 times
-        staleTime: Infinity, // Data never becomes stale
-        enabled: true, // Always enabled
-        refetchOnWindowFocus: false, // Do not refetch on window focus
-        refetchOnMount: true, // Refetch data on component mount
-        refetchOnReconnect: false // Do not refetch on reconnect
+        retry: 0,
+        staleTime: Infinity,
+        enabled: true,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     });
 };
 

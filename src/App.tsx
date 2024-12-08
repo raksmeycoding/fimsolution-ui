@@ -17,6 +17,9 @@ import SignUP from "./components/auth/SignUp";
 import PageNotFound from "./components/main/PageNotFound";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import AdminCreateUser from "./components/admin/AdminCreateUser";
+import FimScore from "./components/main/FimScore";
+import AboutUs from "./components/main/AboutUs";
+import Help from "./components/main/Help";
 
 
 const App: React.FC = () => (
@@ -26,9 +29,12 @@ const App: React.FC = () => (
                 <Routes>
                     <Route element={<MainLayout/>}>
                         <Route path="/" element={<Home/>}/>
+                        <Route path="/fim-score" element={<FimScore/>}/>
+                        <Route path="/about" element={<AboutUs/>}/>
+                        <Route path="/help" element={<Help/>}/>
                         <Route path="/my-loan" element={
                             <ProtectRoute
-                                allowedRoles={["ROLE_USER", "ROLE_ANNO", "ROLE_LOAN_USER"]}>
+                                allowedRoles={["ROLE_USER", "ROLE_ANNO", "ROLE_LOAN_USER", "ROLE_ADMIN"]}>
                                 <TheLoan/>
                             </ProtectRoute>
                         }/>
@@ -38,7 +44,7 @@ const App: React.FC = () => (
                     <Route path="/dash" element={
                         <ProtectRoute allowedRoles={["ROLE_ADMIN"]}>
                             <AdminDashboard/>
-                            </ProtectRoute>
+                        </ProtectRoute>
                     }>
                         <Route index path="create-user" element={<AdminCreateUser/>}/>
                         <Route path="create-loan-user" element={<CreateLoanUser/>}/>

@@ -7,21 +7,23 @@ interface UseDefaultLoanUserParams {
     loanId?: string; // Example of a parameter that might be passed
 }
 
-const useDefaultLoanUser = ({loanId}: UseDefaultLoanUserParams = {}) => {
+const useLoanDetailByLoanId = ({loanId}: UseDefaultLoanUserParams = {}) => {
     return useQuery({
-        queryKey: [d.key.DEFAULT_LOAN_CURRENT_USER_KEY],
+        queryKey: [d.key.LOAN_DETAIL_KEY, loanId],
         queryFn: async () => {
-            return axiosInstance.get<RespondDto<LoanResDto>>(d.f2f.loan.DEFAULT_LOAN_CURRENT_USER_URL)
+            const response = await axiosInstance.get<RespondDto<LoanResDto>>(d.f2f.loan.GET_LOAN_DETAIL_BY_ID_URL + "/" + loanId);
+            return response;
         },
-        retry: 3,
-        staleTime: 60000, // Prevents automatic refetch due to staleness
+        enabled: !!loanId,
+        retry: 0,
+        staleTime: Infinity, // Prevents automatic refetch due to staleness
         refetchOnMount: true, // Ensures refetching on component remount
         refetchOnWindowFocus: false, // Prevents refetching on window focus
         refetchOnReconnect: false, // Prevents refetching on network reconnect
     })
 }
 
-export default useDefaultLoanUser;
+export default useLoanDetailByLoanId;
 
 
 

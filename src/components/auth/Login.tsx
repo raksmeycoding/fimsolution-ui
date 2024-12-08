@@ -58,7 +58,7 @@ function Login() {
     const loginMutation = useMutation({
         retry: false,
         mutationFn: async (request: RequestDto<UserLoginRequest>) => {
-            return await axiosInstance.post<RespondDto<ResponseUserInfo>>("/auth/login", request);
+            return await axiosInstance.post<RespondDto<ResponseUserInfo>>("/v1/auth/login", request);
         },
         onSuccess: (data) => {
 
@@ -78,7 +78,7 @@ function Login() {
             if (userRoles.includes("ROLE_ADMIN")) {
                 navigate("/dash");
             } else if (userRoles.includes("ROLE_USER")) {
-                navigate("/my-loan")
+                navigate("/")
             } else {
                 navigate("/")
             }
@@ -156,7 +156,7 @@ function Login() {
                                 tabIndex={0}
                                 className="focus:outline-none text-2xl font-extrabold leading-6 text-gray-800 mt-4"
                             >
-                            Login to your account
+                                Login to your account
                             </p>
 
                             <p

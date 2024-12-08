@@ -29,3 +29,8 @@ export interface LoanResDto {
     role: string;
 
 }
+
+
+export interface LoanListResponseDto {
+    loanResDtoList: LoanResDto[];
+}

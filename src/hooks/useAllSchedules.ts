@@ -14,10 +14,11 @@ const useAllSchedules = () => {
     const {data, isLoading, error} = useQuery({
         queryKey: [d.key.schedule.ALL_SCHEDULES_KEY],
         queryFn: fetchSchedulesRequest,
-        retry: 1,
+        retry: 0,
         staleTime: Infinity,
-        refetchOnMount: true,
-        refetchOnReconnect: true,
+        enabled: true,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
         refetchOnWindowFocus: false,
     });
 

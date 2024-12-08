@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from "react";
 import iconSearch from "../../images/icon-search.svg";
 import d from "../../constant/constant"
-import useInputHook from "../../hooks/useInputHook";
 import {NavLink, useNavigate} from "react-router-dom";
 import BurgerMenu from "../../images/burger-menu-svgrepo-com.svg";
 import {useMutation} from "@tanstack/react-query";
 import axiosInstance from "../../api/axiosInstance";
 import {MdClear} from "react-icons/md";
 import anime from "animejs/lib/anime.es.js";
+import useVerifyDefaultLoanExist from "../../hooks/useVerifyDefaultLoanExist";
+import useLoanLists from "../../hooks/useLoanLists";
 
 const burgerInit: {
     burgerKey: "burgerKey",
@@ -20,6 +21,12 @@ const burgerInit: {
 function Navbar() {
 
 
+    const {data: loanListData, error: loanListError} = useLoanLists();
+
+    useEffect(() => {
+    }, [loanListData, loanListError]);
+
+
     const [isClickBur, setIsClickBur] = useState<boolean>(() => {
         const value = localStorage.getItem(burgerInit.burgerKey);
         return value === "1";
@@ -27,7 +34,7 @@ function Navbar() {
 
     const logoutMutation = useMutation({
         mutationFn: async () => {
-            await axiosInstance.post("/auth/logout")
+            await axiosInstance.post("/v1/auth/logout")
         },
         onSuccess: () => {
             localStorage.setItem(d.lStorageKey.STATUS_LOGIN_KEY, d.lStorageValue.STATUS_LOGIN_VALUE_0)
@@ -36,23 +43,14 @@ function Navbar() {
         },
         onError: () => {
             localStorage.setItem(d.lStorageKey.STATUS_LOGIN_KEY, d.lStorageValue.STATUS_LOGIN_VALUE_0)
+            window.location.reload()
         }
     })
 
-    useEffect(() => {
-        // console.log("Burger is clicked: ", isClickBur)
-    }, [isClickBur])
-
-    // useEffect(() => {
-    //     // Animate dropdown menu opening
-    //     gsap.to('.nav-menu', {height: isClickBur ? '0' : 'auto', opacity: isClickBur ? 0 : 1, duration: 0.5});
-    // }, [isClickBur])
 
     const handleOnClickBur = () => {
         const value = localStorage.getItem(burgerInit.burgerKey);
 
-        // console.log("Burger is clicked: ", value)
-        // Animate dropdown menu closing
         setIsClickBur((prevState) => {
             if (value === "0" || value === null) {
                 localStorage.setItem(burgerInit.burgerKey, "1")
@@ -70,23 +68,13 @@ function Navbar() {
     }
     const logoutHandler = () => {
         logoutMutation.mutate()
+
     }
 
     const [isLogin, setIsLogin] = useState<boolean>(() => {
         return localStorage.getItem(d.lStorageKey.STATUS_LOGIN_KEY) === "1"
     });
 
-    useEffect(() => {
-
-    }, [isLogin, setIsLogin]);
-
-    const {
-        isInputFocused,
-        isRemainingText,
-        handleFocus,
-        handleBlur,
-        handleChange,
-    } = useInputHook();
 
     const navigate = useNavigate();
 
@@ -123,128 +111,164 @@ function Navbar() {
         setIsClickBur(false);
         localStorage.setItem(burgerInit.burgerKey, "0");
     }
+
+
     return (
         <>
             {
                 !isClickBur && (
-                    <div
-                        className="font-satoshi shadow-xl bg-[#d2f8d0] flex flew-row gap-2 sm:gap-8 justify-between items-center text-xl fixed top-0 left-0 right-0 z-20  px-8 py-4">
-                        <div className="logo">
-                            {/* <img
-          src={FimLogo}
-          alt="fimLogo"
-        /> */}
-                            <div className="FiMSolutionn text-3xl font-bold">Logo</div>
-                        </div>
+                    <div className="bg-[#d2f8d0]">
 
-                        <div
-                            className="navbarWrapper text-base sm:text-sm lg:text-lg max-lg:hidden max-[1140px]:hidden flex flew-row gap-0 lg:gap-8 ">
-                            <NavLink
-                                to={""}
-                                className={({isActive, isPending}) =>
-                                    isActive ? "text-teal-500 font-bold" : isPending ? "" : ""
-                                }
-                            >
-                                Home
-                            </NavLink>
-                            <NavLink
-                                to={"/fim-score"}
-                                className={({isActive, isPending}) =>
-                                    isActive ? "text-teal-500 font-bold" : isPending ? "" : ""
-                                }
-                            >
-                                FiMscore
-                            </NavLink>
-                            <NavLink
-                                to={"/about"}
-                                className={({isActive, isPending}) =>
-                                    isActive ? "text-teal-500 font-bold" : isPending ? "" : ""
-                                }
-                            >
-                                About Us
-                            </NavLink>
-                            <NavLink
-                                to={"/help"}
-                                className={({isActive, isPending}) =>
-                                    isActive ? "text-teal-500 font-bold" : isPending ? "" : ""
-                                }
-                            >
-                                Help
-                            </NavLink>
-                            <NavLink
-                                to={"/my-loan"}
-                                className={({isActive, isPending}) =>
-                                    isActive ? "text-teal-500 font-bold" : isPending ? "" : ""
-                                }
-                            >
-                                <p className="bg-yellow-500 rounded px-2 text-white">My Loan</p>
-                            </NavLink>
-                        </div>
+                        <div className="shadow-md relative">
 
-                        <button onClick={handleOnClickBur}>
-                            <img
-                                className="min-[1140px]:hidden h-8 w-8"
-                                src={BurgerMenu}
-                                alt="burger-menu"
-                            />
-                        </button>
-
-                        <div
-                            className="max-lg:hidden max-[1140px]:hidden nav-search-box flex flex-row items-center justify-between  w-[430px]">
-                            <div className="inputBox-with-search-icon relative flex flex-row items-center">
-                                <div className="bg-white w-[300px] h-[45px] absolute rounded-md"></div>
+                            <div
+                                className="container mx-auto py-2 font-satoshi  flex flex-rown w-full justify-between items-center relative ">
+                                <div className="FiMSolutionn text-3xl font-bold ">Logo</div>
 
 
-                                <div className="nav-search-and-text flex flex-row  absolute items-center gap-2 px-2">
-                                    {!isInputFocused && !isRemainingText && (
-                                        <>
+                                <div
+                                    className="navbarWrapper text-base sm:text-sm lg:text-lg max-lg:hidden max-[1140px]:hidden flex flew-row gap-0 lg:gap-2 items-center absolute -translate-x-1/2 -translate-y-1/2 left-1/2 top-1/2">
+                                    <NavLink
+                                        to={""}
+                                        className={({isActive, isPending}) =>
+                                            isActive ? "mx-2 py-1 border-b-2 border-teal-800 transition ease-in-out delay-150 hover:scale-110 duration-300 text-teal-700 font-bold" : isPending ? "" : " px-2 py-1 transition ease-in-out delay-150 hover:scale-110 duration-300  "
+                                        }
+                                    >
+                                        Home
+                                    </NavLink>
+                                    <NavLink
+                                        to={"/fim-score"}
+                                        className={({isActive, isPending}) =>
+                                            isActive ? "mx-2 py-1 border-b-2 border-teal-800 transition ease-in-out delay-150 hover:scale-110 duration-300 text-teal-700 font-bold" : isPending ? "" : " px-2 py-1 transition ease-in-out delay-150 hover:scale-110 duration-300  "
+                                        }
+                                    >
+                                        FiMscore
+                                    </NavLink>
+                                    <NavLink
+                                        to={"/about"}
+                                        className={({isActive, isPending}) =>
+                                            isActive ? "mx-2 py-1 border-b-2 border-teal-800 transition ease-in-out delay-150 hover:scale-110 duration-300 text-teal-700 font-bold" : isPending ? "" : " px-2 py-1 transition ease-in-out delay-150 hover:scale-110 duration-300  "
+                                        }
+                                    >
+                                        FiMguide
+                                    </NavLink>
+                                    <NavLink
+                                        to={"/help"}
+                                        className={({isActive, isPending}) =>
+                                            isActive ? "mx-2 py-1 border-b-2 border-teal-800 transition ease-in-out delay-150 hover:scale-110 duration-300 text-teal-700 font-bold" : isPending ? "" : " px-2 py-1 transition ease-in-out delay-150 hover:scale-110 duration-300  "
+                                        }
+                                    >
+                                        FiMloan
+                                    </NavLink>
+
+
+                                    {
+                                        loanListData?.data?.loanResDtoList?.length as number > 0 ? (
+                                            <>
+                                                <NavLink
+                                                    to={"/my-loan"}
+                                                    className={({isActive, isPending}) =>
+                                                        isActive ? "mx-2    shadow-inner shadow-teal-800 rounded-2xl border-teal-800 transition ease-in-out delay-150 hover:scale-110 duration-300  " : isPending ? "" : " border-teal-800 border-2 rounded-2xl transition ease-in-out  hover:scale-110 duration-300 "
+                                                    }
+                                                >
+                                                    <span
+                                                        className="font-bold  text-teal-800 rounded-2xl px-2 py-1 border-teal-800">My Loan</span>
+                                                </NavLink>
+
+                                            </>
+                                        ) : (
+                                            <>
+
+                                                <button
+                                                    disabled={true}
+                                                    className="px-1 cursor-not-allowed font-bold text-gray-400 bg-gray-200 shadow-inner rounded ">
+                                                    <span>My Loan</span>
+                                                </button>
+
+
+                                            </>
+                                        )
+
+                                    }
+
+
+                                </div>
+
+                                <button className="min-[1140px]:hidden h-8 w-8" onClick={handleOnClickBur}>
+                                    <img
+                                        src={BurgerMenu}
+                                        alt="burger-menu"
+                                    />
+                                </button>
+
+
+                                <div
+                                    className="max-lg:hidden max-[1140px]:hidden nav-search-box flex flex-row items-center justify-end gap-4  w-[430px] ">
+                                    <div className="inputBox-with-search-icon relative flex flex-row items-center ">
+                                        <button className="cursor-pointer">
                                             <img
-                                                className="h-[24px]"
+                                                className="h-[24px] hover:h-[28px] duration-300"
                                                 src={iconSearch}
                                                 alt="navSearchIcon"
                                             />
-                                            <div className="nav-search-text">Search</div>
-                                        </>
-                                    )}
-                                </div>
+                                        </button>
+                                    </div>
 
-                                <input
-                                    className="w-[300px] h-[45px] rounded-md absolute outline-none px-2 bg-transparent"
-                                    type="text"
-                                    title="search-input"
-                                    onFocus={handleFocus}
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                />
+                                    {
+                                        isLogin ?
+                                            (
+                                                <button
+                                                    onClick={logoutHandler}
+                                                    className="login w-[100px] bg-white hover:shadow-xl hover:duration-300   flex flex-row items-center justify-center h-[36px] rounded-md"
+                                                >
+                                                    <div
+                                                        className="hover:font-bold hover:scale-110 duration-300 transition ease-in-out">Logout
+                                                    </div>
+                                                </button>
+                                            ) :
+                                            (
+                                                <>
+                                                    <button onClick={() => navigate("/login")}
+                                                    >
+                                                        <div
+                                                            className="hover:font-bold hover:scale-110 duration-300 transition ease-in-out">Log
+                                                            in
+                                                        </div>
+                                                    </button>
+                                                    <button
+                                                        onClick={() => navigate("/signup")}
+                                                        className="login w-[100px] bg-teal-800 hover:shadow-xl hover:duration-300    flex flex-row items-center justify-center h-[36px] rounded-3xl"
+                                                    >
+                                                        <div
+                                                            className="hover:font-bold hover:scale-110 duration-300 transition ease-in-out text-white">Sign
+                                                            up
+                                                        </div>
+                                                    </button>
+                                                </>
+                                            )
+                                    }
+                                </div>
                             </div>
 
-                            {/*Handle login or logout button*/}
-                            {
-                                isLogin ?
-                                    (
-                                        <button
-                                            onClick={logoutHandler}
-                                            className="login w-[100px] bg-white  flex flex-row items-center justify-center h-[45px] rounded-md"
-                                        >
-                                            <div className="">Logout</div>
-                                        </button>
-                                    ) :
-                                    (
-                                        <button
-                                            onClick={() => navigate("/login")}
-                                            className="login w-[100px] bg-white  flex flex-row items-center justify-center h-[45px] rounded-md"
-                                        >
-                                            <div className="">Login</div>
-                                        </button>
-                                    )
-                            }
                         </div>
+
+
+                        {/*<input*/}
+                        {/*    className="w-[300px] h-[45px] rounded-md absolute outline-none px-2 bg-transparent hover:shadow-xl duration-300 "*/}
+                        {/*    type="text"*/}
+                        {/*    title="search-input"*/}
+                        {/*    onFocus={handleFocus}*/}
+                        {/*    onBlur={handleBlur}*/}
+                        {/*    onChange={handleChange}*/}
+                        {/*/>*/}
+
                     </div>
                 )
             }
 
 
-            {/*    if isClickBur == true*/}
+            {/*    if isClickBur == true*/
+            }
             {
                 isClickBur && (
                     <>
@@ -316,7 +340,8 @@ function Navbar() {
             }
 
         </>
-    );
+    )
+        ;
 }
 
 export default Navbar;

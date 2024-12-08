@@ -31,6 +31,13 @@ declare module 'animejs/lib/anime.es.js' {
     export = anime;
 }
 
+// src/types/react-slick.d.ts
+declare module 'react-slick' {
+    const Slider: any;
+    export default Slider;
+}
+
+
 declare namespace NodeJS {
     interface ProcessEnv {
         REACT_APP_MODE: string;

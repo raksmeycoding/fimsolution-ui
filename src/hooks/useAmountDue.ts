@@ -10,11 +10,12 @@ const useAmountDue = () => {
         queryFn: async () => {
             return await axiosInstance.get<RespondDto<ScheduleAmountDueResDto>>(d.f2f.schedule.GET_AMOUNT_DUE_FROM_DEFAULT_LOAN_URL)
         },
-        retry: 1,
+        retry: 0,
         staleTime: Infinity,
-        refetchOnMount: true,
-        refetchOnWindowFocus: false,
+        enabled: true,
         refetchOnReconnect: false,
+        refetchOnMount: false,
+        refetchOnWindowFocus: false,
     })
 };
 

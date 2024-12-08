@@ -13,11 +13,11 @@ const useUsers = () => {
             const response = await axiosInstance.get<RespondDto<User[]>>(d.f2f.user.GET_ALL_USER_URL);
             return response.data;  // Assuming your API returns data in the "data" field
         },
-        retry: 2, // Retry failed requests up to 2 times
+        retry: 0, // Retry failed requests up to 2 times
         staleTime: Infinity, // The data never becomes stale
         enabled: true, // The query is always enabled
         refetchOnWindowFocus: false, // Do not refetch on window focus
-        refetchOnMount: true, // Refetch the data every time the component mounts
+        refetchOnMount: false, // Refetch the data every time the component mounts
         refetchOnReconnect: false // Do not refetch on reconnect
     });
 };
