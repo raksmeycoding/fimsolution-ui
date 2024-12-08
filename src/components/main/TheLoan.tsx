@@ -15,10 +15,6 @@ import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 
 
-type SwitchState = {
-    pastDueState: boolean;
-    scheduleToReceive: boolean;
-}
 
 const settings = {
     dots: true,

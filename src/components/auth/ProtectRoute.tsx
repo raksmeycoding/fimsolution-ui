@@ -37,7 +37,6 @@ const ProtectRoute: React.FC<ProtectedRouteProps> = ({children, allowedRoles}) =
         },
     });
 
-    const {data: loanListData} = useLoanLists();
 
     useEffect(() => {
         const tokenInCache: string | undefined = queryClient.getQueryData([d.key.ACCESS_TOKEN_KEY]);
