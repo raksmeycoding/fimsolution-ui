@@ -44,22 +44,30 @@ const Footer = () => {
                                         <span className="block uppercase text-blueGray-500 text-sm font-semibold mb-2">Useful Links</span>
                                         <ul className="list-unstyled">
                                             <li>
-                                                <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                                                   href="#">About
-                                                    Us</a>
+                                                <div
+                                                    className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
+                                                >About
+                                                    Us
+                                                </div>
                                             </li>
                                             <li>
-                                                <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                                                   href="#">Blog</a>
+                                                <div
+                                                    className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
+                                                >Blog
+                                                </div>
                                             </li>
                                             <li>
-                                                <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                                                   href="#">Github</a>
+                                                <div
+                                                    className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
+                                                >Github
+                                                </div>
                                             </li>
                                             <li>
-                                                <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                                                   href="#">Free
-                                                    Products</a>
+                                                <div
+                                                    className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
+                                                >Free
+                                                    Products
+                                                </div>
                                             </li>
                                         </ul>
                                     </div>
@@ -68,18 +76,24 @@ const Footer = () => {
                                         <ul className="list-unstyled">
 
                                             <li>
-                                                <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                                                   href="#">Terms &amp; Conditions</a>
+                                                <div
+                                                    className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
+                                                >Terms &amp; Conditions
+                                                </div>
                                             </li>
                                             <li>
-                                                <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                                                   href="#">Privacy
-                                                    Policy</a>
+                                                <div
+                                                    className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
+                                                >Privacy
+                                                    Policy
+                                                </div>
                                             </li>
                                             <li>
-                                                <a className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
-                                                   href="#">Contact
-                                                    Us</a>
+                                                <div
+                                                    className="text-blueGray-600 hover:text-blueGray-800 font-semibold block pb-2 text-sm"
+                                                >Contact
+                                                    Us
+                                                </div>
                                             </li>
                                         </ul>
                                     </div>

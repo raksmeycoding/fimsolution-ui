@@ -1,7 +1,7 @@
 import {useQuery} from "@tanstack/react-query";
 import d from "../constant/constant"
 import axiosInstance from "../api/axiosInstance";
-import {LoanListResponseDto, LoanResDto, RespondDto} from "../types";
+import {LoanListResponseDto, RespondDto} from "../types";
 
 
 const useLoanLists = () => {

@@ -1,6 +1,6 @@
 import {useQuery} from "@tanstack/react-query";
 import axiosInstance from "../api/axiosInstance";
-import {LoanResDto, RespondDto} from "../types";
+import {RespondDto} from "../types";
 import {ScheduleAmountDueResDto} from "../types/schedule";
 import d from "../constant/constant";
 

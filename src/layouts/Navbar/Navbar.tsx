@@ -7,7 +7,6 @@ import {useMutation} from "@tanstack/react-query";
 import axiosInstance from "../../api/axiosInstance";
 import {MdClear} from "react-icons/md";
 import anime from "animejs/lib/anime.es.js";
-import useVerifyDefaultLoanExist from "../../hooks/useVerifyDefaultLoanExist";
 import useLoanLists from "../../hooks/useLoanLists";
 
 const burgerInit: {

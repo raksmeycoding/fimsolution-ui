@@ -1,22 +1,18 @@
-import React, {useCallback, useEffect, useRef, useState} from "react";
-import {formatDateToCustomString, formatDateToMDY} from "../../utils/date";
+import React, {useEffect, useState} from "react";
+import {formatDateToMDY} from "../../utils/date";
 import {useQuery} from "@tanstack/react-query";
 import d from "../../constant/constant"
 import axiosInstance from "../../api/axiosInstance";
 import {LoanReqDto, LoanResDto, PaymentResDto, RespondDto} from "../../types";
-import useAmountDue from "../../hooks/useAmountDue";
-import useScheduleToReceive from "../../hooks/useScheduleToReceive";
 import {formatDate} from "../../utils/helpers";
 import usePastDue from "../../hooks/usePastDue";
-import {GrCaretNext} from "react-icons/gr";
-import useDefaulLoanUser from "../../hooks/useLoanDetailByLoanId";
+import useLoanDetailByLoanId from "../../hooks/useLoanDetailByLoanId";
 import useLoanLists from "../../hooks/useLoanLists";
 import useQueryAmountDueBorrower from "../../hooks/useQueryAmountDueBorrower";
 import useQueryAmountDueSourceLender from "../../hooks/useQueryAmountDueSourceLender";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import useLoanDetailByLoanId from "../../hooks/useLoanDetailByLoanId";
 
 
 type SwitchState = {
