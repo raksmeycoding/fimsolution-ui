@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {useForm} from 'react-hook-form';
 import {z, ZodSchema} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
@@ -6,7 +6,7 @@ import {FaEdit, FaRegSave} from 'react-icons/fa';
 import {MdDeleteOutline} from 'react-icons/md';
 import useCreateSchedule from '../../hooks/createScheduleRequest';
 import useAllSchedules from '../../hooks/useAllSchedules';
-import {ScheduleResDto, ScheduleReqDto} from '../../types';
+import {ScheduleReqDto, ScheduleResDto} from '../../types';
 import {formatDate} from '../../utils/helpers';
 import useAllLoans from "../../hooks/useAllLoans";
 
@@ -80,18 +80,12 @@ const CreateSchedule = () => {
     } = useCreateSchedule();
     const {
         data: schedulesData,
-        error
     } = useAllSchedules();
     const {data: loanData} = useAllLoans();
 
-    useEffect(() => {
-        console.log("User all schedules", schedulesData)
-        console.log("error useAllSchedules", error)
-    }, [error, schedulesData]);
 
     const handleCreateSchedule = (formData: ScheduleReqDto) => {
         const requestBody: ScheduleReqDto = {...formData};
-        console.log('Create Schedule:', requestBody);
         createSchedule(requestBody);
         setIsEditingSchedule((prev) => !prev);
     };
@@ -101,50 +95,50 @@ const CreateSchedule = () => {
     };
 
     return (
-        <>
+        <div className="container mx-auto">
             <form onSubmit={handleSubmit(handleCreateSchedule)}>
                 <div className="overflow-x-scroll">
                     <table className="table-auto w-full overflow-x-scroll bg-white shadow-md rounded-md">
                         <thead className="bg-gray-100">
                         <tr>
-                            <th className="px-4 py-2 text-left text-nowrap">Schedule ID</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Loan ID</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Amount</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Adjustment</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Paid</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Due</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Interest</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Principle</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Fim Fee</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Balance</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Source</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Status</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Delinquency</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Memo</th>
-                            <th className="px-4 py-2 text-left text-nowrap">Created At</th>
-                            <th className="px-4 py-2 text-left text-nowrap flex sticky z-10 right-0 bg-gray-100 top-0 bottom-0 left-0">Actions</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap sticky left-0 bg-gray-100 shadow">Schedule ID</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Loan ID</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Amount</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Adjustment</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Paid</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Due</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Interest</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Principle</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Fim Fee</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Balance</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Source</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Status</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Delinquency</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Memo</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap">Created At</th>
+                            <th className="px-4 py-2 min-w-[200px] text-left text-nowrap  sticky z-10 right-0 bg-gray-100  ">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         {schedulesData?.map((schedule: ScheduleResDto) => (
 
                             <tr key={schedule.id} className="border-t">
-                                <td className="px-4 py-2">{schedule?.id?.slice(0, 8) + "..."}</td>
-                                <td className="px-4 py-2">{schedule.loanId ? (schedule?.loanId?.slice(0, 8) + "...") : "Unknown"}</td>
-                                <td className="px-4 py-2">{schedule.amount}</td>
-                                <td className="px-4 py-2">{schedule.adjustment}</td>
-                                <td className="px-4 py-2">{schedule.paid}</td>
-                                <td className="px-4 py-2">{schedule.due}</td>
-                                <td className="px-4 py-2">{schedule.interest}</td>
-                                <td className="px-4 py-2">{schedule.principle}</td>
-                                <td className="px-4 py-2">{schedule.fimFee}</td>
-                                <td className="px-4 py-2">{schedule.balance}</td>
-                                <td className="px-4 py-2">{schedule.source}</td>
-                                <td className="px-4 py-2">{schedule.status}</td>
-                                <td className="px-4 py-2">{schedule.delinquency}</td>
-                                <td className="px-4 py-2">{schedule.memo}</td>
-                                <td className="px-4 py-2">{formatDate(schedule?.createAt as string, true)}</td>
-                                <td className="px-4 py-2 flex sticky right-0 bg-gray-100 z-10">
+                                <td className="px-4 py-2 min-w-[200px] sticky left-0 bg-gray-100">{schedule?.id?.slice(0, 8) + "..."}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.loanId ? (schedule?.loanId?.slice(0, 8) + "...") : "Unknown"}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.amount}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.adjustment}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.paid}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.due}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.interest}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.principle}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.fimFee}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.balance}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.source}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.status}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.delinquency}</td>
+                                <td className="px-4 py-2 min-w-[200px]">{schedule.memo}</td>
+                                <td className="px-4 py-2 min-w-[200px] text-nowrap">{formatDate(schedule?.createAt as string, true)}</td>
+                                <td className="px-4 py-2 min-w-[200px] flex sticky right-0 bg-gray-100 z-10">
 
 
                                     <div className="">
@@ -163,14 +157,14 @@ const CreateSchedule = () => {
                         ))}
                         {isEditingSchedule && (
                             <tr>
-                                <td className="px-4 py-2">
-                                    <input disabled type="text" {...register('id')} className="px-2 py-1 border"/>
+                                <td className="px-4 py-2 min-w-[200px] sticky left-0 bg-gray-100">
+                                    <input disabled type="text" {...register('id')} className="px-2 py-1 border w-full"/>
                                     {errors.id && <span className="text-red-600">{errors.id.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
+                                <td className="px-4 py-2 min-w-[200px]">
                                     {/*<input type="text" {...register('loanId')} className="px-2 py-1 border"/>*/}
                                     {/*{errors.loanId && <span className="text-red-600">{errors.loanId.message}</span>}*/}
-                                    <select {...register("loanId")} className="px-2 py-1 border">
+                                    <select {...register("loanId")} className="px-2 py-1 border w-full">
                                         <option value="">Select Existed Loan</option>
                                         {
                                             loanData?.data.map((loan) => {
@@ -183,55 +177,55 @@ const CreateSchedule = () => {
                                         }
                                     </select>
                                 </td>
-                                <td className="px-4 py-2">
+                                <td className="px-4 py-2 min-w-[200px]">
                                     <input type="text" {...register('amount')}
-                                           className="px-2 py-1 border"/>
+                                           className="px-2 py-1 border w-full"/>
                                     {errors.amount && <span className="text-red-600">{errors.amount.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
+                                <td className="px-4 py-2 min-w-[200px]">
                                     <input type="text" {...register('adjustment')}
-                                           className="px-2 py-1 border"/>
+                                           className="px-2 py-1 border w-full"/>
                                     {errors.adjustment &&
                                         <span className="text-red-600">{errors.adjustment.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
+                                <td className="px-4 py-2 min-w-[200px]">
                                     <input type="text" {...register('paid')}
-                                           className="px-2 py-1 border"/>
+                                           className="px-2 py-1 border w-full"/>
                                     {errors.paid &&
                                         <span className="text-red-600">{errors.paid.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
+                                <td className="px-4 py-2 min-w-[200px]">
                                     <input type="text" {...register('due')}
-                                           className="px-2 py-1 border"/>
+                                           className="px-2 py-1 border w-full"/>
                                     {errors.due &&
                                         <span className="text-red-600">{errors.due.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
+                                <td className="px-4 py-2 min-w-[200px]">
                                     <input type="text" {...register("interest")}
-                                           className="px-2 py-1 border"/>
+                                           className="px-2 py-1 border w-full"/>
                                     {errors.interest &&
                                         <span className="text-red-600">{errors.interest.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
+                                <td className="px-4 py-2 min-w-[200px]">
                                     <input type="text" {...register("principle")}
-                                           className="px-2 py-1 border"/>
+                                           className="px-2 py-1 border w-full"/>
                                     {errors.principle &&
                                         <span className="text-red-600">{errors.principle.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
+                                <td className="px-4 py-2 min-w-[200px]">
                                     <input type="text" {...register("fimFee")}
-                                           className="px-2 py-1 border"/>
+                                           className="px-2 py-1 border w-full"/>
                                     {errors.fimFee &&
                                         <span className="text-red-600">{errors.fimFee.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
+                                <td className="px-4 py-2 min-w-[200px]">
                                     <input type="text" {...register("balance")}
-                                           className="px-2 py-1 border"/>
+                                           className="px-2 py-1 border w-full"/>
                                     {errors.balance &&
                                         <span className="text-red-600">{errors.balance.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
-                                    <select {...register("source")} className="px-2 py-1 border">
+                                <td className="px-4 py-2 min-w-[200px]">
+                                    <select {...register("source")} className="px-2 py-1 border w-full">
                                         {
                                             scheduleSourceEnum.map((source) => {
                                                 return (
@@ -242,8 +236,8 @@ const CreateSchedule = () => {
                                     </select>
                                     {errors.source && <span className="text-red-600">{errors.source.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
-                                    <select {...register('status')} className="px-2 py-1 border">
+                                <td className="px-4 py-2 min-w-[200px]">
+                                    <select {...register('status')} className="px-2 py-1 border w-full">
                                         {scheduleStatusEnum.map((status) => (
                                             <option key={status} value={status}>
                                                 {status}
@@ -252,8 +246,8 @@ const CreateSchedule = () => {
                                     </select>
                                     {errors.status && <span className="text-red-600">{errors.status.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
-                                    <select {...register("delinquency")} className="px-2 py-1 border">
+                                <td className="px-4 py-2 min-w-[200px]">
+                                    <select {...register("delinquency")} className="px-2 py-1 border w-full">
                                         {
                                             scheduleDelinquencyEnum.map((delinquency) => {
                                                 return (
@@ -266,16 +260,16 @@ const CreateSchedule = () => {
                                     {errors.delinquency &&
                                         <span className="text-red-600">{errors.delinquency.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
-                                    <input type="text" {...register('memo')} className="px-2 py-1 border"/>
+                                <td className="px-4 py-2 min-w-[200px]">
+                                    <input type="text" {...register('memo')} className="px-2 py-1 border w-full"/>
                                     {errors.memo && <span className="text-red-600">{errors.memo.message}</span>}
                                 </td>
-                                <td className="px-4 py-2">
+                                <td className="px-4 py-2 min-w-[200px]">
                                     <input type="datetime-local" {...register('createAt')}
-                                           className="px-2 py-1 border"/>
+                                           className="px-2 py-1 border w-full"/>
                                     {errors.createAt && <span className="text-red-600">{errors.createAt.message}</span>}
                                 </td>
-                                <td className="px-4  flex sticky z-10 right-0 bg-gray-100 top-0 bottom-0 left-0">
+                                <td className="px-4 py-2 min-w-[200px] x sticky z-10 right-0 bg-gray-100 items-center justify-center">
                                     <button type="submit">
                                         <FaRegSave className="text-amber-500 text-sm"/>
                                     </button>
@@ -296,7 +290,7 @@ const CreateSchedule = () => {
                     </button>
                 </div>
             </form>
-        </>
+        </div>
     );
 };
 

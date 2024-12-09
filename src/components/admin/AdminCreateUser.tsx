@@ -59,7 +59,6 @@ function AdminCreateUser() {
         email: ""
     };
 
-    const disabledKey: (keyof User)[] = ["userId"];
 
     const form = useForm<User>({
         defaultValues: dataTemplate,
@@ -69,7 +68,6 @@ function AdminCreateUser() {
 
     const {register, handleSubmit, formState: {errors}} = form;
 
-    const disableByKey = (key: keyof User) => disabledKey.includes(key);
 
 
     const {data: queryData} = useUsers()
@@ -81,81 +79,111 @@ function AdminCreateUser() {
 
     return (
         <>
-            <form onSubmit={handleSubmit(handleCreatUser)}>
-                {/* Table displaying user records */}
-                <div className="overflow-x-auto">
-                    <table className="min-w-full bg-white shadow-md rounded-md">
-                        <thead className="bg-gray-100">
-                        <tr>
-                            <th className="px-4 py-2 text-left">User ID</th>
-                            <th className="px-4 py-2 text-left">Family Name</th>
-                            <th className="px-4 py-2 text-left">Given Name</th>
-                            <th className="px-4 py-2 text-left">Middle Name</th>
-                            <th className="px-4 py-2 text-left">Nick Name</th>
-                            <th className="px-4 py-2 text-left">Email</th>
-                            <th className="px-4 py-2 text-left">Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {queryData?.data?.map((user) => (
-                            <tr key={user.userId} className="border-t">
-                                <td className="px-4 py-2">{user.userId?.slice(0, 8) + "..."}</td>
-                                <td className="px-4 py-2">{user.familyName}</td>
-                                <td className="px-4 py-2">{user.givenName}</td>
-                                <td className="px-4 py-2">{user.middleName}</td>
-                                <td className="px-4 py-2">{user.nickName}</td>
-                                <td className="px-4 py-2">{user.email}</td>
-                                <td className="px-4 py-2 flex">
-                                    <button type="button"><FaRegSave className="text-amber-500 text-sm"/></button>
-                                    <button type="button" onClick={() => {
-                                        console.log(user)
-                                    }}><FaEdit className="text-teal-600"/></button>
-                                    <button type="button"><MdDeleteOutline className="text-red-600"/></button>
-                                </td>
-                            </tr>
-                        ))}
 
-                        {/* Editable form row */}
-                        {isEditingUser && (
+            <div className="container mx-auto">
+                <form onSubmit={handleSubmit(handleCreatUser)}>
+                    {/* Table displaying user records */}
+                    <div className="overflow-x-scroll">
+                        <table className="table-auto w-full overflow-x-scroll bg-white shadow-md rounded-md">
+                            <thead className="bg-gray-100">
                             <tr>
-                                {(Object.keys(dataTemplate) as (keyof User)[]).map((key) => (
-                                    <td key={key} className="px-4 py-2">
-                                        <input
-                                            disabled={disableByKey(key)}
-                                            {...register(key)}
-                                            className="px-2 py-1 border"
-                                        />
-                                        {errors[key] &&
-                                            <span className="text-red-600 text-sm">{errors[key]?.message}</span>}
-                                    </td>
-                                ))}
-                                <td className="px-4 py-2 flex">
-
-                                    <button type="submit">
-                                        <FaRegSave className="text-amber-500 text-sm"/>
-                                    </button>
-                                    <button type="button"><FaEdit className="text-teal-600"/></button>
-                                    <button onClick={cancelAddUserHandler}>
-                                        <MdDeleteOutline className="text-red-600"/>
-                                    </button>
-                                </td>
+                                <th className="px-4 py-2 text-left text-nowrap">User ID
+                                </th>
+                                <th className="px-4 py-2 text-left text-nowrap">Family Name</th>
+                                <th className="px-4 py-2 text-left text-nowrap">Given Name</th>
+                                <th className="px-4 py-2 text-left text-nowrap">Middle Name</th>
+                                <th className="px-4 py-2 text-left text-nowrap">Nick Name</th>
+                                <th className="px-4 py-2 text-left text-nowrap">Email</th>
+                                <th className="px-4 py-2 text-left text-nowrap">Actions</th>
                             </tr>
-                        )}
-                        </tbody>
-                    </table>
-                </div>
+                            </thead>
+                            <tbody>
+                            {queryData?.data?.map((user) => (
+                                <tr key={user.userId} className="border-t">
+                                    <td className="px-4 py-2 min-w-[200px] sticky bg-gray-100 left-0">{user.userId?.slice(0, 8) + "..."}</td>
+                                    <td className="px-4 py-2 min-w-[200px]">{user.familyName}</td>
+                                    <td className="px-4 py-2 min-w-[200px]">{user.givenName}</td>
+                                    <td className="px-4 py-2 min-w-[200px]">{user.middleName}</td>
+                                    <td className="px-4 py-2 min-w-[200px]">{user.nickName}</td>
+                                    <td className="px-4 py-2 min-w-[200px]">{user.email}</td>
+                                    <td className="px-4 py-2 min-w-[200px] x sticky z-10 right-0 bg-gray-100 items-center justify-center">
+                                        <button type="button"><FaRegSave className="text-amber-500 text-sm"/></button>
+                                        <button type="button" onClick={() => {
+                                            console.log(user)
+                                        }}><FaEdit className="text-teal-600"/></button>
+                                        <button type="button"><MdDeleteOutline className="text-red-600"/></button>
+                                    </td>
+                                </tr>
+                            ))}
 
-                {/* Action Buttons */}
-                <div className="mt-4">
+                            {/* Editable form row */}
+                            {isEditingUser && (
+                                <tr>
+                                    <td className="px-4 py-2 min-w-[200px] sticky left-0 bg-gray-100">
+                                        <input disabled type="text" {...register('userId')} className="px-2 py-1 border w-full"/>
+                                        {errors.userId && <span className="text-red-600">{errors.userId.message}</span>}
+                                    </td>
 
-                    <button type="button" disabled={isEditingUser} onClick={handleToggle}
-                            className="bg-teal-800 text-white rounded px-2 py-1">
-                        Create user
-                    </button>
-                </div>
-            </form>
+                                    <td className="px-4 py-2 min-w-[200px]">
+                                        <input type="text" {...register('familyName')}
+                                               className="px-2 py-1 border w-full"/>
+                                        {errors.familyName && <span className="text-red-600">{errors.familyName.message}</span>}
+                                    </td>
+                                    <td className="px-4 py-2 min-w-[200px]">
+                                        <input type="text" {...register('givenName')}
+                                               className="px-2 py-1 border w-full"/>
+                                        {errors.givenName &&
+                                            <span className="text-red-600">{errors.givenName.message}</span>}
+                                    </td>
+                                    <td className="px-4 py-2 min-w-[200px]">
+                                        <input type="text" {...register('middleName')}
+                                               className="px-2 py-1 border w-full"/>
+                                        {errors.middleName &&
+                                            <span className="text-red-600">{errors.middleName.message}</span>}
+                                    </td>
+                                    <td className="px-4 py-2 min-w-[200px]">
+                                        <input type="text" {...register('nickName')}
+                                               className="px-2 py-1 border w-full"/>
+                                        {errors.nickName &&
+                                            <span className="text-red-600">{errors.nickName.message}</span>}
+                                    </td>
+                                    <td className="px-4 py-2 min-w-[200px]">
+                                        <input type="text" {...register("email")}
+                                               className="px-2 py-1 border w-full"/>
+                                        {errors.email &&
+                                            <span className="text-red-600">{errors.email.message}</span>}
+                                    </td>
+
+                                    <td className="px-4 py-2 min-w-[200px] x sticky z-10 right-0 bg-gray-100 items-center justify-center">
+                                        <button type="submit">
+                                            <FaRegSave className="text-amber-500 text-sm"/>
+                                        </button>
+                                        <button type="button" onClick={cancelAddUserHandler}>
+                                            <MdDeleteOutline className="text-red-600"/>
+                                        </button>
+                                    </td>
+                                </tr>
+                            )}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {/* Action Buttons */}
+                    <div className="mt-4">
+
+                        <button type="button" disabled={isEditingUser} onClick={handleToggle}
+                                className="bg-teal-800 text-white rounded px-2 py-1">
+                            Create Loan
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+
+
         </>
-    );
+    )
+        ;
 }
 
 export default AdminCreateUser;

@@ -41,20 +41,22 @@ const App: React.FC = () => (
                     </Route>
                     {/* Admin Route */}
                     {/* AdminDashboard layout and nested routes */}
-                    <Route path="/dash" element={
-                        <ProtectRoute allowedRoles={["ROLE_ADMIN"]}>
-                            <AdminDashboard/>
-                        </ProtectRoute>
-                    }>
-                        <Route index path="create-user" element={<AdminCreateUser/>}/>
-                        <Route path="create-loan-user" element={<CreateLoanUser/>}/>
-                        <Route path="create-payment" element={<CreatePayment/>}/>
-                        <Route path="create-schedule" element={<CreateSchedule/>}/>
-                        <Route path="create-loan" element={<CreateLoan/>}/>
-                        {/*<Route index element={<DashboardHome/>}/>*/}
-                        {/*<Route path="admin" element={<Admin/>}/>*/}
-                        {/*<Route path="reports" element={<Reports/>}/>*/}
-                        {/*<Route path="user-management" element={<UserManagement/>}/>*/}
+                    <Route element={<MainLayout/>}>
+                        <Route path="/dash" element={
+                            <ProtectRoute allowedRoles={["ROLE_ADMIN"]}>
+                                <AdminDashboard/>
+                            </ProtectRoute>
+                        }>
+                            <Route index path="create-user" element={<AdminCreateUser/>}/>
+                            <Route path="create-loan-user" element={<CreateLoanUser/>}/>
+                            <Route path="create-payment" element={<CreatePayment/>}/>
+                            <Route path="create-schedule" element={<CreateSchedule/>}/>
+                            <Route path="create-loan" element={<CreateLoan/>}/>
+                            {/*<Route index element={<DashboardHome/>}/>*/}
+                            {/*<Route path="admin" element={<Admin/>}/>*/}
+                            {/*<Route path="reports" element={<Reports/>}/>*/}
+                            {/*<Route path="user-management" element={<UserManagement/>}/>*/}
+                        </Route>
                     </Route>
 
 

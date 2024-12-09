@@ -8,9 +8,7 @@ export const useAllPayments = () => {
         queryKey: [d.key.payment.ALL_PAYMENTS_KEY],
         queryFn: async () => {
             const response = await axiosInstance.get<RespondDto<PaymentResDto[]>>(d.apiUrl.payment.ALL_PAYMENTS)
-            console.log("Respond fetching data:", response)
             const responseWithData = response?.data;
-            console.log("Response with data:", responseWithData);
             return responseWithData;
         },
         retry: 0,

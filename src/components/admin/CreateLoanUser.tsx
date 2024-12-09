@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {useMutation, useQuery} from "@tanstack/react-query";
 import {Controller, useForm} from "react-hook-form";
 import {z} from "zod";
@@ -6,7 +6,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import axiosInstance from "../../api/axiosInstance";
 import d from "../../constant/constant";
 import queryClient from "../../utils/clients/queryClient";
-import {FaEdit, FaRegSave} from "react-icons/fa";
+import {FaEdit, FaRegSave, FaUserPlus} from "react-icons/fa";
 import {MdDeleteOutline} from "react-icons/md";
 import {LoanReqDto, RequestDto, RespondDto} from "../../types";
 import {LoanUserReqDto, LoanUserResDto} from "../../types/loan/loan";
@@ -14,6 +14,8 @@ import useUsers from "../../hooks/useUsers";
 import useAllLoans from "../../hooks/useAllLoans";
 import toast, {Toaster} from "react-hot-toast";
 import {AxiosError} from "axios";
+import {AnimatePresence, motion} from "motion/react";
+import Backdrop from "../../layouts/Backdrop";
 
 
 const loanTypeEnum = ["INFO", "ACCESS", "DECIDE", "TEAM"] as const
@@ -38,7 +40,6 @@ export const loanUserReqDtoSchema = z.object({
 // const errorToast = (error: any) => toast.error(error.message);
 
 const CreateLoanUser = () => {
-    const [isEditingUser, setIsEditingUser] = React.useState(false);
     const {mutate} = useMutation({
         onMutate: () => {
             toast.loading("Loan user is creating...", {id: "create-loan-user-id"})
@@ -48,7 +49,7 @@ const CreateLoanUser = () => {
             const response = await axiosInstance.post<RespondDto<LoanReqDto>>(d.apiUrl.loan.POST_CREATE_LOAN_USER, requestBody);
             return response.data;
         },
-        onSuccess: async (data) => {
+        onSuccess: async () => {
             // console.log("Loan user created successfully:", data);
             await queryClient.invalidateQueries({queryKey: [d.key.loan.ALL_LOAN_USER_KEY]});
             toast.success("Create loan user successfully", {id: "create-loan-user-id"})
@@ -102,17 +103,14 @@ const CreateLoanUser = () => {
     const formValues = watch();
 
     useEffect(() => {
-        const {formState: {errors}} = form;
-        console.log("Form errors:", errors);
-
-        console.log("Watching from values objects:", formValues)
+        // const {formState: {errors}} = form;
+        // console.log("Form errors:", errors);
+        //
+        // console.log("Watching from values objects:", formValues)
     }, [form, formValues]);
 
-    const cancelCreateHandler = () => {
-        setIsEditingUser(false); // Close form without saving
-    };
 
-    const {data: loanUserData, error} = useQuery({
+    const {data: loanUserData} = useQuery({
         queryKey: [d.key.loan.ALL_LOAN_USER_KEY],
         queryFn: async () => {
             return await axiosInstance.get<RespondDto<LoanUserResDto[]>>(d.apiUrl.loan.GET_ALL_LOAN_USER);
@@ -124,21 +122,27 @@ const CreateLoanUser = () => {
         refetchOnWindowFocus: false,
     });
 
-    useEffect(() => {
-        console.log("error", error)
-    }, [error]);
 
     const {data: existingUsers} = useUsers();
 
     const {data: allExistingLoans} = useAllLoans();
 
+    const [showCreateLoanUser, setShowCreateLoanUser] = useState<boolean>(false)
+
+    const handleShowCreateLoanUser = () => {
+        setShowCreateLoanUser((pre) => !pre)
+    }
+
 
     return (
-        <>
+        <div className="container mx-auto h-full relative">
+
             <Toaster
+                containerClassName="container mx-auto"
                 position="top-right"
                 reverseOrder={false}
             />
+
             <div className="overflow-x-auto">
                 <table className="min-w-full bg-white shadow-md rounded-md">
                     <thead className="bg-gray-100">
@@ -172,220 +176,257 @@ const CreateLoanUser = () => {
                     </tbody>
                 </table>
             </div>
-            <div className="p-6 bg-white rounded shadow-lg">
 
-                <form onSubmit={handleSubmit(handleCreateLoanUser)} className="space-y-6">
+            <AnimatePresence>
+                {showCreateLoanUser ?
+                    (
 
-                    {/* Loan User Form */}
-                    {isEditingUser ? (
-                        <>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="flex flex-col">
-                                    <label htmlFor="userId" className="mb-1 text-sm font-medium text-gray-700">User
-                                        ID</label>
-                                    {
-                                        existingUsers ?
-                                            (
-                                                <>
-                                                    <Controller
-                                                        name="userId"
-                                                        control={control}
-                                                        rules={{required: "User Id is required"}}
-                                                        render={({field}) => (
-                                                            <select {...field} className="px-2 py-1 border">
-                                                                <option className="text-gray-500" value="">
-                                                                    Select Existed User
-                                                                </option>
-                                                                {existingUsers?.data.map((user) => (
-                                                                    <option key={user.userId} value={user.userId}>
-                                                                        {user.userId}
-                                                                    </option>
-                                                                ))}
-                                                            </select>
-                                                        )}
-                                                    />
+                        <Backdrop
+                            onClick={handleShowCreateLoanUser}
+                        >
 
-                                                </>
-                                            ) :
-                                            (
-                                                <>
-
-                                                    <input
-                                                        id="userId"
-                                                        {...register("userId")}
-                                                        className="px-4 py-2 border border-gray-300 rounded-md"
-                                                    />
-
-                                                    {errors.userId &&
-                                                        <span
-                                                            className="text-red-600 text-sm">{errors.userId.message}</span>}
-                                                </>
-                                            )
-                                    }
+                            <motion.div
+                                onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+                                    e.stopPropagation()
+                                }}
+                                initial={{opacity: 0, scale: 0.9}}
+                                animate={{opacity: 1, scale: 1}}
+                                exit={{opacity: 0, scale: 0.8}} // Slides up and fades out
+                                transition={{
+                                    duration: 0.5,
+                                    ease: "easeInOut",
+                                }}
 
 
-                                </div>
+                                className="p-6 bg-white rounded shadow-lg">
 
-                                <div className="flex flex-col">
-                                    <label htmlFor="loanId" className="mb-1 text-sm font-medium text-gray-700">Loan
-                                        ID</label>
-                                    {
-                                        allExistingLoans ?
-                                            (
-                                                <>
-                                                    <Controller
-                                                        name="loanId"
-                                                        control={control}
-                                                        rules={{required: "Loan type is required"}}
-                                                        render={({field}) => (
-                                                            <select {...field} className="px-2 py-1 border">
-                                                                <option className="text-gray-500" value="">
-                                                                    Select Existed Loan
-                                                                </option>
-                                                                {allExistingLoans?.data.map((loan) => (
-                                                                    <option key={loan.id} value={loan.id}>
-                                                                        {loan.id}
-                                                                    </option>
-                                                                ))}
-                                                            </select>
-                                                        )}
-                                                    />
+                                <form onSubmit={handleSubmit(handleCreateLoanUser)} className="space-y-6">
 
-                                                </>
-                                            ) :
-                                            (
-                                                <>
 
-                                                    <input
-                                                        id="loanId"
-                                                        {...register("loanId")}
-                                                        className="px-4 py-2 border border-gray-300 rounded-md"
-                                                    />
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="flex flex-col">
+                                            <label htmlFor="userId"
+                                                   className="mb-1 text-sm font-medium text-gray-700">User
+                                                ID</label>
+                                            {
+                                                existingUsers ?
+                                                    (
+                                                        <>
+                                                            <Controller
+                                                                name="userId"
+                                                                control={control}
+                                                                rules={{required: "User Id is required"}}
+                                                                render={({field}) => (
+                                                                    <select {...field} className="px-2 py-1 border">
+                                                                        <option className="text-gray-500" value="">
+                                                                            Select Existed User
+                                                                        </option>
+                                                                        {existingUsers?.data.map((user) => (
+                                                                            <option key={user.userId}
+                                                                                    value={user.userId}>
+                                                                                {user.userId}
+                                                                            </option>
+                                                                        ))}
+                                                                    </select>
+                                                                )}
+                                                            />
 
-                                                    {errors.loanId &&
-                                                        <span
-                                                            className="text-red-600 text-sm">{errors.loanId.message}</span>}
-                                                </>
-                                            )
-                                    }
-                                </div>
+                                                        </>
+                                                    ) :
+                                                    (
+                                                        <>
 
-                                <div className="flex flex-col">
-                                    <label htmlFor="loanName" className="mb-1 text-sm font-medium text-gray-700">Loan
-                                        Name</label>
-                                    <input
-                                        id="loanName"
-                                        {...register("loanName")}
-                                        className="px-4 py-2 border border-gray-300 rounded-md"
-                                    />
-                                    {errors.loanName &&
-                                        <span className="text-red-600 text-sm">{errors.loanName.message}</span>}
-                                </div>
+                                                            <input
+                                                                id="userId"
+                                                                {...register("userId")}
+                                                                className="px-4 py-2 border border-gray-300 rounded-md"
+                                                            />
 
-                                <div className="flex flex-col">
-                                    <label htmlFor="role"
-                                           className="mb-1 text-sm font-medium text-gray-700">Role</label>
-                                    <select id="role" {...register("role")}
-                                            className="px-4 py-2 border border-gray-300 rounded-md">
-                                        <option value="BORROWER">BORROWER</option>
-                                        <option value="LENDER">LENDER</option>
-                                        <option value="PROXY">PROXY</option>
-                                    </select>
-                                    {errors.role && <span className="text-red-600 text-sm">{errors.role.message}</span>}
-                                </div>
+                                                            {errors.userId &&
+                                                                <span
+                                                                    className="text-red-600 text-sm">{errors.userId.message}</span>}
+                                                        </>
+                                                    )
+                                            }
 
-                                <div className="flex flex-col">
-                                    <label htmlFor="prioritize"
-                                           className="mb-1 text-sm font-medium text-gray-700">Prioritize</label>
-                                    <select id="prioritize" {...register("prioritize")}
-                                            className="px-4 py-2 border border-gray-300 rounded-md">
-                                        <option value="DEFAULT">DEFAULT</option>
-                                        <option value="NONE_DEFAULT">NONE_DEFAULT</option>
-                                    </select>
-                                    {errors.prioritize &&
-                                        <span className="text-red-600 text-sm">{errors.prioritize.message}</span>}
-                                </div>
 
-                                <div className="flex flex-col">
-                                    <label htmlFor="type" className="mb-1 text-sm font-medium text-gray-700">Loan
-                                        Type</label>
-                                    <select id="type" {...register("type")}
-                                            className="px-4 py-2 border border-gray-300 rounded-md">
-                                        {loanTypeEnum.map((loanType) => (
-                                            <option key={loanType} value={loanType}>{loanType}</option>
-                                        ))}
-                                    </select>
-                                    {errors.type && <span className="text-red-600 text-sm">{errors.type.message}</span>}
-                                </div>
+                                        </div>
 
-                                <div className="flex flex-col">
-                                    <label htmlFor="email"
-                                           className="mb-1 text-sm font-medium text-gray-700">Email</label>
-                                    <input
-                                        id="email"
-                                        {...register("email")}
-                                        className="px-4 py-2 border border-gray-300 rounded-md"
-                                    />
-                                    {errors.email &&
-                                        <span className="text-red-600 text-sm">{errors.email.message}</span>}
-                                </div>
+                                        <div className="flex flex-col">
+                                            <label htmlFor="loanId"
+                                                   className="mb-1 text-sm font-medium text-gray-700">Loan
+                                                ID</label>
+                                            {
+                                                allExistingLoans ?
+                                                    (
+                                                        <>
+                                                            <Controller
+                                                                name="loanId"
+                                                                control={control}
+                                                                rules={{required: "Loan type is required"}}
+                                                                render={({field}) => (
+                                                                    <select {...field} className="px-2 py-1 border">
+                                                                        <option className="text-gray-500" value="">
+                                                                            Select Existed Loan
+                                                                        </option>
+                                                                        {allExistingLoans?.data.map((loan) => (
+                                                                            <option key={loan.id} value={loan.id}>
+                                                                                {loan.id}
+                                                                            </option>
+                                                                        ))}
+                                                                    </select>
+                                                                )}
+                                                            />
 
-                                <div className="flex flex-col">
-                                    <label htmlFor="memo"
-                                           className="mb-1 text-sm font-medium text-gray-700">Memo</label>
-                                    <textarea
-                                        id="memo"
-                                        {...register("memo")}
-                                        className="px-4 py-2 border border-gray-300 rounded-md"
-                                        rows={3}
-                                    />
-                                    {errors.memo && <span className="text-red-600 text-sm">{errors.memo.message}</span>}
-                                </div>
-                            </div>
+                                                        </>
+                                                    ) :
+                                                    (
+                                                        <>
 
-                            <td className="px-4 py-2 flex">
+                                                            <input
+                                                                id="loanId"
+                                                                {...register("loanId")}
+                                                                className="px-4 py-2 border border-gray-300 rounded-md"
+                                                            />
 
-                                <button type="submit">
-                                    <FaRegSave className="text-amber-500 text-sm"/>
-                                </button>
-                                <button type="button"><FaEdit className="text-teal-600"/></button>
-                                <button onClick={cancelCreateHandler}>
-                                    <MdDeleteOutline className="text-red-600"/>
-                                </button>
-                            </td>
+                                                            {errors.loanId &&
+                                                                <span
+                                                                    className="text-red-600 text-sm">{errors.loanId.message}</span>}
+                                                        </>
+                                                    )
+                                            }
+                                        </div>
 
-                            <div className="mt-4 flex justify-between">
-                                <button
-                                    type="submit"
-                                    className="bg-teal-500 text-white rounded px-6 py-2 flex items-center"
-                                >
-                                    <FaRegSave className="mr-2"/> Save Loan User
-                                </button>
+                                        <div className="flex flex-col">
+                                            <label htmlFor="loanName"
+                                                   className="mb-1 text-sm font-medium text-gray-700">Loan
+                                                Name</label>
+                                            <input
+                                                id="loanName"
+                                                {...register("loanName")}
+                                                className="px-4 py-2 border border-gray-300 rounded-md"
+                                            />
+                                            {errors.loanName &&
+                                                <span
+                                                    className="text-red-600 text-sm">{errors.loanName.message}</span>}
+                                        </div>
 
-                                <button
-                                    type="button"
-                                    onClick={cancelCreateHandler}
-                                    className="bg-gray-300 text-black rounded px-6 py-2 flex items-center"
-                                >
-                                    <MdDeleteOutline className="mr-2"/> Cancel
-                                </button>
-                            </div>
-                        </>
-                    ) : (
-                        <div className="text-center">
-                            <button
-                                type="button"
-                                onClick={() => setIsEditingUser(true)}
-                                className="bg-teal-800 text-white rounded px-6 py-2"
-                            >
-                                Create Loan User
-                            </button>
-                        </div>
+                                        <div className="flex flex-col">
+                                            <label htmlFor="role"
+                                                   className="mb-1 text-sm font-medium text-gray-700">Role</label>
+                                            <select id="role" {...register("role")}
+                                                    className="px-4 py-2 border border-gray-300 rounded-md">
+                                                <option value="BORROWER">BORROWER</option>
+                                                <option value="LENDER">LENDER</option>
+                                                <option value="PROXY">PROXY</option>
+                                            </select>
+                                            {errors.role &&
+                                                <span className="text-red-600 text-sm">{errors.role.message}</span>}
+                                        </div>
 
-                    )}
-                </form>
+                                        <div className="flex flex-col">
+                                            <label htmlFor="prioritize"
+                                                   className="mb-1 text-sm font-medium text-gray-700">Prioritize</label>
+                                            <select id="prioritize" {...register("prioritize")}
+                                                    className="px-4 py-2 border border-gray-300 rounded-md">
+                                                <option value="DEFAULT">DEFAULT</option>
+                                                <option value="NONE_DEFAULT">NONE_DEFAULT</option>
+                                            </select>
+                                            {errors.prioritize &&
+                                                <span
+                                                    className="text-red-600 text-sm">{errors.prioritize.message}</span>}
+                                        </div>
+
+                                        <div className="flex flex-col">
+                                            <label htmlFor="type"
+                                                   className="mb-1 text-sm font-medium text-gray-700">Loan
+                                                Type</label>
+                                            <select id="type" {...register("type")}
+                                                    className="px-4 py-2 border border-gray-300 rounded-md">
+                                                {loanTypeEnum.map((loanType) => (
+                                                    <option key={loanType} value={loanType}>{loanType}</option>
+                                                ))}
+                                            </select>
+                                            {errors.type &&
+                                                <span className="text-red-600 text-sm">{errors.type.message}</span>}
+                                        </div>
+
+                                        <div className="flex flex-col">
+                                            <label htmlFor="email"
+                                                   className="mb-1 text-sm font-medium text-gray-700">Email</label>
+                                            <input
+                                                id="email"
+                                                {...register("email")}
+                                                className="px-4 py-2 border border-gray-300 rounded-md"
+                                            />
+                                            {errors.email &&
+                                                <span
+                                                    className="text-red-600 text-sm">{errors.email.message}</span>}
+                                        </div>
+
+                                        <div className="flex flex-col">
+                                            <label htmlFor="memo"
+                                                   className="mb-1 text-sm font-medium text-gray-700">Memo</label>
+                                            <textarea
+                                                id="memo"
+                                                {...register("memo")}
+                                                className="px-4 py-2 border border-gray-300 rounded-md"
+                                                rows={3}
+                                            />
+                                            {errors.memo &&
+                                                <span className="text-red-600 text-sm">{errors.memo.message}</span>}
+                                        </div>
+                                    </div>
+
+                                    <td className="px-4 py-2 flex">
+
+                                        <button type="submit">
+                                            <FaRegSave className="text-amber-500 text-sm"/>
+                                        </button>
+                                        <button type="button"><FaEdit className="text-teal-600"/></button>
+                                        <button>
+                                            <MdDeleteOutline className="text-red-600"/>
+                                        </button>
+                                    </td>
+
+                                    <div className="mt-4 flex justify-between">
+                                        <button
+                                            type="submit"
+                                            className="bg-teal-500 text-white rounded px-6 py-2 flex items-center"
+                                        >
+                                            <FaRegSave className="mr-2"/> Save Loan User
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            onClick={handleShowCreateLoanUser}
+                                            className="bg-gray-300 text-black rounded px-6 py-2 flex items-center"
+                                        >
+                                            <MdDeleteOutline className="mr-2"/> Cancel
+                                        </button>
+                                    </div>
+
+
+                                </form>
+                            </motion.div>
+
+                        </Backdrop>
+
+                    ) : null}
+            </AnimatePresence>
+
+
+            <div>
+                <button
+                    type="button"
+                    onClick={handleShowCreateLoanUser}
+                    className="bg-teal-600 text-white rounded-xl px-2 py-1 text-[17px] font-light mx-2 my-2 hover:scale-105 duration-300 transition-all hover:shadow-xl flex flex-row items-center justify-center gap-2"
+                >
+                    <span>Add</span><FaUserPlus/>
+                </button>
             </div>
-        </>
+
+        </div>
     );
 };
 

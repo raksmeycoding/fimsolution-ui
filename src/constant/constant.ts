@@ -24,6 +24,9 @@ const app = {
         },
         payment: {
             ALL_PAYMENTS_KEY: "ALL_PAYMENTS_KEY",
+        },
+        session: {
+            VERIFY_ROLE_key: "VERIFY_ROLE_KEY",
         }
     },
 
@@ -75,6 +78,9 @@ const app = {
             GET_BORROWER_YOU_ARE_SCHEDULE_BOTH_BORROWER_AND_LENDER: "/v1/f2f/schedule/schedule-to-receive",
             GET_AMOUNT_DUE_HAS_SOURCE_BORROWER_URL: "/v2/f2f/schedule/loan",
             GET_AMOUNT_DUE_HAS_SOURCE_LENDER_URL: "/v2/f2f/schedule/loan",
+        },
+        session: {
+            VERIFY_ROLE: "/v1/verify/session/verify/users",
         }
     },
 

@@ -65,15 +65,15 @@ const CreatePayment = () => {
 
 
     useEffect(() => {
-        console.log("Watching create payment:", formValue)
-        console.log("Watching errors:", errors);
+        // console.log("Watching create payment:", formValue)
+        // console.log("Watching errors:", errors);
 
         setIsProcessing(false)
     }, [formValue, errors, isSuccess]);
 
     useEffect(() => {
-        console.log("All payment error:", allPaymentsError)
-        console.log("All payments data:", allPaymentsData)
+        // console.log("All payment error:", allPaymentsError)
+        // console.log("All payments data:", allPaymentsData)
     }, [allPaymentsData, allPaymentsError]);
 
     const onSubmit = (data: PaymentReqDto) => {
@@ -85,7 +85,7 @@ const CreatePayment = () => {
 
     return (
 
-        <>
+        <div className="container mx-auto">
             <div className="overflow-x-auto">
                 <table className="min-w-full bg-white shadow-md rounded-md">
                     <thead className="bg-gray-100">
@@ -355,7 +355,7 @@ const CreatePayment = () => {
                         </div>}
                 </button>
             </form>
-        </>
+        </div>
     );
 };
 

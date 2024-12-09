@@ -8,6 +8,7 @@ import axiosInstance from "../../api/axiosInstance";
 import {MdClear} from "react-icons/md";
 import anime from "animejs/lib/anime.es.js";
 import useLoanLists from "../../hooks/useLoanLists";
+import useVerifyUserSession from "../../hooks/useVerifyUserSession";
 
 const burgerInit: {
     burgerKey: "burgerKey",
@@ -19,6 +20,7 @@ const burgerInit: {
 
 function Navbar() {
 
+    const {data: sessionData} = useVerifyUserSession();
 
     const {data: loanListData, error: loanListError} = useLoanLists();
 
@@ -162,7 +164,7 @@ function Navbar() {
 
 
                                     {
-                                        loanListData?.data?.loanResDtoList?.length as number > 0 ? (
+                                        sessionData && (sessionData?.admin || sessionData?.registerUser) && (
                                             <>
                                                 <NavLink
                                                     to={"/my-loan"}
@@ -175,19 +177,36 @@ function Navbar() {
                                                 </NavLink>
 
                                             </>
-                                        ) : (
-                                            <>
-
-                                                <button
-                                                    disabled={true}
-                                                    className="px-1 cursor-not-allowed font-bold text-gray-400 bg-gray-200 shadow-inner rounded ">
-                                                    <span>My Loan</span>
-                                                </button>
-
-
-                                            </>
                                         )
 
+                                        // : (
+                                        //     <>
+                                        //
+                                        //         <button
+                                        //             disabled={true}
+                                        //             className="px-1 cursor-not-allowed font-bold text-gray-400 bg-gray-200 shadow-inner rounded ">
+                                        //             <span>My Loan</span>
+                                        //         </button>
+                                        //
+                                        //
+                                        //     </>
+                                        // )
+
+                                    }
+
+                                    {
+                                        sessionData && sessionData?.admin && (
+                                            <>
+                                                <NavLink
+                                                    to={"/dash/create-user"}
+                                                    className={({isActive, isPending}) =>
+                                                        isActive ? "mx-2 py-1 border-b-2 border-teal-800 transition ease-in-out delay-150 hover:scale-110 duration-300 text-teal-700 font-bold" : isPending ? "" : " px-2 py-1 transition ease-in-out delay-150 hover:scale-110 duration-300  "
+                                                    }
+                                                >
+                                                    Dashboard
+                                                </NavLink>
+                                            </>
+                                        )
                                     }
 
 

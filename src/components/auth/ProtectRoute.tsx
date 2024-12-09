@@ -8,6 +8,7 @@ import {ResponseUserInfo} from '../../types/auth';
 import {setAccessToken} from '../../utils/tokenSerivce';
 import d from '../../constant/constant';
 import queryClient from '../../utils/clients/queryClient';
+import useVerifyUserSession from "../../hooks/useVerifyUserSession";
 
 
 interface ProtectedRouteProps {
@@ -35,6 +36,8 @@ const ProtectRoute: React.FC<ProtectedRouteProps> = ({children, allowedRoles}) =
             queryClient.setQueryData([d.key.ACCESS_TOKEN_KEY], data.data.token); // Update token in cache
         },
     });
+
+    const {data: verifyUserSession} = useVerifyUserSession()
 
 
     useEffect(() => {
@@ -66,24 +69,17 @@ const ProtectRoute: React.FC<ProtectedRouteProps> = ({children, allowedRoles}) =
     }
 
 
-    // if (!hasAtLeastOneLoan) {
-    //     return (
-    //         <div className="flex h-screen w-full items-center justify-center">
-    //             <HasAtLeastOneLoan/>
-    //         </div>
-    //     )
-    // }
-
-    if (!hasPermission) {
-        return (
-            <div className="flex h-screen w-full items-center justify-center">
-                <UnAuthorizedPermission/>
-            </div>
-        );
+    if (hasPermission && (verifyUserSession?.admin || verifyUserSession?.registerUser)) {
+        return <>{children}</>;
     }
 
 
-    return <>{children}</>;
+    return (
+        <div className="flex h-screen w-full items-center justify-center">
+            <UnAuthorizedPermission/>
+        </div>
+    );
+
 };
 
 export default ProtectRoute;

@@ -102,7 +102,7 @@ const CreateLoan = () => {
 
 
     return (
-        <>
+        <div className="container mx-auto">
             <form onSubmit={handleSubmit(handleCreatUser)}>
                 {/* Table displaying user records */}
                 <div className="overflow-x-scroll">
@@ -237,7 +237,7 @@ const CreateLoan = () => {
                     </button>
                 </div>
             </form>
-        </>
+        </div>
     );
 };
 

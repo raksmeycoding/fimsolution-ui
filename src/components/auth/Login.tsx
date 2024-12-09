@@ -86,6 +86,7 @@ function Login() {
 
         },
         onError: (error: AxiosError<RespondDto<any>>) => {
+            console.log("Error:", error);
             errorNotify(error?.response?.data?.message);
             localStorage.setItem(d.lStorageKey.STATUS_LOGIN_KEY, d.lStorageValue.STATUS_LOGIN_VALUE_0)
 

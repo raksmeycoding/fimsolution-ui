@@ -3,7 +3,7 @@ import d from "../constant/constant";
 import axiosInstance from "../api/axiosInstance";
 import {LoanResDto, RespondDto} from "../types";
 
-const UseVerifyDefaultLoanExist = () => {
+const useVerifyDefaultLoanExist = () => {
     return useQuery({
         queryKey: [d.key.loan.HAVE_DEFAULT_LOAN],
         queryFn: async () => {
@@ -21,4 +21,4 @@ const UseVerifyDefaultLoanExist = () => {
     })
 };
 
-export default UseVerifyDefaultLoanExist;
+export default useVerifyDefaultLoanExist;
